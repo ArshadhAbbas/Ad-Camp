@@ -15,4 +15,5 @@ class ColorConstants {
   static const Color balticSea = Color(0xFF232127);
   static const Color mirage = Color(0xFF201F23);
   static const Color charcoalGrey = Color(0xFF3F3F46);
+  static const Color cloud = Color(0xFFC4C4C4);
 }
