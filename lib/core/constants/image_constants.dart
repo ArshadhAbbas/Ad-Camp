@@ -14,4 +14,7 @@ class ImageConstants {
   static const String chartIncrease = 'assets/icons/chart_increase.svg';
   static const String tradeUpAngled = 'assets/icons/trade_up_angled.svg';
   static const String tradeDownAngled = 'assets/icons/trade_down_angled.svg';
+  static const String calender = 'assets/icons/calender.svg';
+  static const String noData = 'assets/icons/no_data.svg';
+  static const String wallet = 'assets/icons/wallet.svg';
 }

@@ -1,5 +1,5 @@
 import 'package:ad_camp/core/constants/campaign_status_enum.dart';
-import 'package:ad_camp/view/screens/campaign/widgets/campagn_search_field.dart';
+import 'package:ad_camp/view/screens/campaign/widgets/campaign_search_field.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_filter_chips.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_overview_card.dart';
 import 'package:flutter/material.dart';

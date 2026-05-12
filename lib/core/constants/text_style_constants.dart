@@ -11,4 +11,5 @@ class TextStyleConstants {
   static TextStyle f12w400 = TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
   static TextStyle f10w400 = TextStyle(fontSize: 10, fontWeight: FontWeight.w400);
   static TextStyle f12w600 = TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
+  static TextStyle f10w600 = TextStyle(fontSize: 10, fontWeight: FontWeight.w600);
 }

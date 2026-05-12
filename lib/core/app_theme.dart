@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData get theme => ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      surface: ColorConstants.onyx, // Match your Scaffold color here
+    ),
     scaffoldBackgroundColor: ColorConstants.onyx,
     appBarTheme: AppBarTheme(
       backgroundColor: ColorConstants.darkJungleGreen,
@@ -41,6 +45,14 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: ColorConstants.darkJungleGreen,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: ColorConstants.whiteSmoke),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: ColorConstants.whiteSmoke.withValues(alpha: 0.1)),
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide(color: ColorConstants.whiteSmoke.withValues(alpha: 0.1)),
@@ -50,8 +62,18 @@ class AppTheme {
       ),
     ),
     switchTheme: SwitchThemeData(
-      trackColor: WidgetStateProperty.fromMap({
-        WidgetState.selected: ColorConstants.topaz,
+      trackColor: WidgetStateProperty.fromMap({WidgetState.selected: ColorConstants.topaz}),
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      color: ColorConstants.darkJungleGreen,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return TextStyleConstants.f14w600.copyWith(color: ColorConstants.whiteSmoke);
+        }
+
+        return TextStyleConstants.f14w600.copyWith(
+          color: ColorConstants.whiteSmoke.withValues(alpha: 0.7),
+        );
       }),
     ),
   );
