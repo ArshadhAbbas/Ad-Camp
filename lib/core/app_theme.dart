@@ -49,5 +49,10 @@ class AppTheme {
         color: ColorConstants.whiteSmoke.withValues(alpha: 0.7),
       ),
     ),
+    switchTheme: SwitchThemeData(
+      trackColor: WidgetStateProperty.fromMap({
+        WidgetState.selected: ColorConstants.topaz,
+      }),
+    ),
   );
 }

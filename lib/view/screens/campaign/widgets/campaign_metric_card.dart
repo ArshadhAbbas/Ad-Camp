@@ -10,11 +10,13 @@ class CampaignMetricCard extends StatelessWidget {
     required this.value,
     required this.label,
     this.suffix,
+    this.iconColor,
   });
   final String icon;
   final String value;
   final String label;
   final Widget? suffix;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,10 @@ class CampaignMetricCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SvgPicture.asset(icon),
+          SvgPicture.asset(
+            icon,
+            colorFilter: iconColor != null ? ColorFilter.mode(iconColor!, BlendMode.srcIn) : null,
+          ),
           SizedBox(height: 4),
           Text(value, style: TextStyleConstants.f12w600),
           SizedBox(height: 4),
@@ -38,10 +43,7 @@ class CampaignMetricCard extends StatelessWidget {
                 label,
                 style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.starDust),
               ),
-              if (suffix != null) ...[
-                SizedBox(width: 4),
-                suffix!,
-              ],
+              if (suffix != null) ...[SizedBox(width: 4), suffix!],
             ],
           ),
         ],

@@ -10,5 +10,8 @@ class ImageConstants {
   static const String cursor = 'assets/icons/cursor.svg';
   static const String tradeUp = 'assets/icons/trade_up.svg';
   static const String target = 'assets/icons/target.svg';
-
+  static const String tvIcon = 'assets/icons/tv_icon.svg';
+  static const String chartIncrease = 'assets/icons/chart_increase.svg';
+  static const String tradeUpAngled = 'assets/icons/trade_up_angled.svg';
+  static const String tradeDownAngled = 'assets/icons/trade_down_angled.svg';
 }
