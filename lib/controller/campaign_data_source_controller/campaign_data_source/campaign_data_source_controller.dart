@@ -19,9 +19,13 @@ CampaignRepository campaignRepository(Ref ref) {
 
 class CampaignDataControllerModel {
   final CampaignsListModel originalList;
+
   final CampaignsListModel filteredList;
+
   final CampaignStatusEnum? selectedStatusFilter;
+
   final CampaignObjectiveEnum? selectedObjectiveFilter;
+
   final String? searchText;
 
   CampaignDataControllerModel({
@@ -35,53 +39,100 @@ class CampaignDataControllerModel {
   CampaignDataControllerModel copyWith({
     CampaignsListModel? originalList,
     CampaignsListModel? filteredList,
-    CampaignStatusEnum? selectedStatusFilter,
-    CampaignObjectiveEnum? selectedObjectiveFilter,
-    String? searchText,
+    Object? selectedStatusFilter = _empty,
+    Object? selectedObjectiveFilter = _empty,
+    Object? searchText = _empty,
   }) {
     return CampaignDataControllerModel(
       originalList: originalList ?? this.originalList,
+
       filteredList: filteredList ?? this.filteredList,
-      selectedStatusFilter: selectedStatusFilter ?? this.selectedStatusFilter,
-      selectedObjectiveFilter: selectedObjectiveFilter ?? this.selectedObjectiveFilter,
-      searchText: searchText ?? this.searchText,
+
+      selectedStatusFilter: selectedStatusFilter == _empty
+          ? this.selectedStatusFilter
+          : selectedStatusFilter as CampaignStatusEnum?,
+
+      selectedObjectiveFilter: selectedObjectiveFilter == _empty
+          ? this.selectedObjectiveFilter
+          : selectedObjectiveFilter as CampaignObjectiveEnum?,
+
+      searchText: searchText == _empty ? this.searchText : searchText as String?,
     );
   }
 }
 
-@riverpod
+const _empty = Object();
+
+@Riverpod(keepAlive: true)
 class CampaignDataSourceController extends _$CampaignDataSourceController {
   @override
   Future<CampaignDataControllerModel> build() async {
     final repository = ref.watch(campaignRepositoryProvider);
-    final fetchCampaigns = await repository.fetchCampaigns();
 
-    return CampaignDataControllerModel(originalList: fetchCampaigns, filteredList: fetchCampaigns);
+    final campaigns = await repository.fetchCampaigns();
+
+    return CampaignDataControllerModel(originalList: campaigns, filteredList: campaigns);
   }
 
   void filterStatus(CampaignStatusEnum? status) {
     final currentState = state.value;
     if (currentState == null) return;
+    final updated = currentState.copyWith(selectedStatusFilter: status);
+    applyFilters(updated);
+  }
 
-    final filtered =
-        currentState.originalList.campaigns
-            ?.where((campaign) => campaign.status?.toLowerCase() == status?.name.toLowerCase())
-            .toList() ??
-        [];
-    if (status == null) {
-      state = AsyncValue.data(
-        CampaignDataControllerModel(
-          originalList: currentState.originalList,
-          filteredList: currentState.originalList,
-          selectedStatusFilter: null,
-        ),
-      );
-      return;
-    }
+  void filterObjective(CampaignObjectiveEnum? objective) {
+    final currentState = state.value;
+    if (currentState == null) return;
+    final updated = currentState.copyWith(selectedObjectiveFilter: objective);
+    applyFilters(updated);
+  }
+
+  void searchCampaigns(String search) {
+    final currentState = state.value;
+    if (currentState == null) return;
+    final updated = currentState.copyWith(searchText: search);
+    applyFilters(updated);
+  }
+
+  void clearFilters() {
+    final currentState = state.value;
+
+    if (currentState == null) return;
+
     state = AsyncValue.data(
-      currentState.copyWith(
+      CampaignDataControllerModel(
+        originalList: currentState.originalList,
+
+        filteredList: currentState.originalList,
+      ),
+    );
+  }
+
+  void applyFilters(CampaignDataControllerModel model) {
+    final filtered =
+        model.originalList.campaigns?.where((campaign) {
+          final matchesStatus =
+              model.selectedStatusFilter == null ||
+              campaign.status?.toLowerCase() == model.selectedStatusFilter!.name.toLowerCase();
+
+          final matchesObjective =
+              model.selectedObjectiveFilter == null ||
+              campaign.objective?.toLowerCase() ==
+                  model.selectedObjectiveFilter!.name.toLowerCase();
+
+          final matchesSearch =
+              model.searchText == null ||
+              model.searchText!.isEmpty ||
+              (campaign.name ?? "").toLowerCase().contains(model.searchText!.toLowerCase());
+
+          return matchesStatus && matchesObjective && matchesSearch;
+        }).toList() ??
+        [];
+
+    state = AsyncValue.data(
+      model.copyWith(
         filteredList: CampaignsListModel(campaigns: filtered, total: filtered.length),
-        selectedStatusFilter: status,
       ),
     );
   }

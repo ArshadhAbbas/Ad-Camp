@@ -26,20 +26,21 @@ class CampaignScreen extends StatelessWidget {
               final campaigns = ref.watch(campaignDataSourceControllerProvider);
               return campaigns.when(
                 data: (data) =>
-                    data.filteredList.campaigns != null &&
-                        data.filteredList.campaigns!.isNotEmpty
-                    ? ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: data.filteredList.campaigns!.length,
-                        itemBuilder: (context, index) => CampaignOverviewCard(
-                          campaign: data.filteredList.campaigns![index],
+                    data.filteredList.campaigns != null && data.filteredList.campaigns!.isNotEmpty
+                    ? Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async {},
+                          child: ListView.separated(
+                            itemCount: data.filteredList.campaigns!.length,
+                            itemBuilder: (context, index) =>
+                                CampaignOverviewCard(campaign: data.filteredList.campaigns![index]),
+                            separatorBuilder: (context, index) => SizedBox(height: 13),
+                          ),
                         ),
-                        separatorBuilder: (context, index) => SizedBox(height: 13),
                       )
                     : Center(child: Text('No campaigns found.')),
                 error: (error, stackTrace) => Center(child: Text('Error occurred:$error')),
-                loading: () => Center(child: AppLoader(size: 30,)),
+                loading: () => Center(child: AppLoader(size: 30)),
               );
             },
           ),

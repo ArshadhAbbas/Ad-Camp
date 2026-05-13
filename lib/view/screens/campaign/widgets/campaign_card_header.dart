@@ -1,6 +1,5 @@
 import 'package:ad_camp/core/constants/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
-import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_status_card.dart';
 import 'package:ad_camp/view/widgets/image_widget.dart';

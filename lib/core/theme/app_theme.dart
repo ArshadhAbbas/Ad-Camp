@@ -64,6 +64,21 @@ class AppTheme {
     switchTheme: SwitchThemeData(
       trackColor: WidgetStateProperty.fromMap({WidgetState.selected: ColorConstants.topaz}),
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: ColorConstants.darkJungleGreen,
+      showDragHandle: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(ColorConstants.topaz),
+        textStyle: WidgetStateProperty.all(TextStyleConstants.f14w600),
+        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+    ),
     popupMenuTheme: PopupMenuThemeData(
       color: ColorConstants.darkJungleGreen,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {

@@ -38,7 +38,7 @@ class BottomNavBarScreen extends ConsumerWidget {
       top: false,
       child: Scaffold(
         appBar: UniversalAppbar(title: getTitle()),
-        body: SingleChildScrollView(child: screens[ref.watch(bottomNavBarControllerProvider)]),
+        body: screens[ref.watch(bottomNavBarControllerProvider)],
         bottomNavigationBar: CustomBottomNavBar(),
       ),
     );

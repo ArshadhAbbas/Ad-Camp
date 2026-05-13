@@ -121,7 +121,7 @@ final class CampaignDataSourceControllerProvider
         argument: null,
         retry: null,
         name: r'campaignDataSourceControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -135,7 +135,7 @@ final class CampaignDataSourceControllerProvider
 }
 
 String _$campaignDataSourceControllerHash() =>
-    r'5173d18a7469d8030bc43c71be2925f74c718031';
+    r'79468c733b1f6d26f6c935c74bf40a6473feb4a5';
 
 abstract class _$CampaignDataSourceController
     extends $AsyncNotifier<CampaignDataControllerModel> {

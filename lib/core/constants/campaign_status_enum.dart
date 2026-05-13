@@ -7,4 +7,5 @@ enum CampaignObjectiveEnum {
   awareness,
   consideration,
   conversion,
+  engagement,
 }

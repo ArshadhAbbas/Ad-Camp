@@ -24,12 +24,12 @@ class AlertsScreen extends StatelessWidget {
           SizedBox(height: 13),
           Text("Recent Anomalies", style: TextStyleConstants.f14w600),
           SizedBox(height: 6),
-          ListView.separated(
-            itemBuilder: (context, index) => AlertAnomalyCard(),
-            separatorBuilder: (context, index) => SizedBox(height: 10),
-            shrinkWrap: true,
-            itemCount: 3,
-            physics: NeverScrollableScrollPhysics(),
+          Expanded(
+            child: ListView.separated(
+              itemBuilder: (context, index) => AlertAnomalyCard(),
+              separatorBuilder: (context, index) => SizedBox(height: 10),
+              itemCount: 3,
+            ),
           ),
           SizedBox(height: 16),
           AppCard(
