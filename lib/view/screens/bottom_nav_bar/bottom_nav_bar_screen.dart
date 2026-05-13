@@ -1,7 +1,7 @@
 import 'package:ad_camp/controller/bottom_nav_bar_controller/bottom_nav_bar_controller.dart';
 import 'package:ad_camp/view/screens/alerts/alerts_screen.dart';
 import 'package:ad_camp/view/screens/bottom_nav_bar/widgets/custom_bottom_nav_bar.dart';
-import 'package:ad_camp/view/screens/campaign/campagin_screen.dart';
+import 'package:ad_camp/view/screens/campaign/campaign_screen.dart';
 import 'package:ad_camp/view/screens/profile/profile_screen.dart';
 import 'package:ad_camp/view/screens/spend_summary/spend_summary_screen.dart';
 import 'package:ad_camp/view/widgets/universal_appbar.dart';

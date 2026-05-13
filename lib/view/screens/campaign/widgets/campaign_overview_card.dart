@@ -1,7 +1,9 @@
-import 'package:ad_camp/core/constants/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
-import 'package:ad_camp/utils/date_time_extensions.dart';
+import 'package:ad_camp/models/campaigns_list_model/campaigns_list_model.dart';
+import 'package:ad_camp/utils/campaign_status_helper.dart';
+import 'package:ad_camp/utils/num_extensions.dart';
+import 'package:ad_camp/utils/string_helpers.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_bottom_info_section.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_card_header.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_metric_card.dart';
@@ -10,8 +12,8 @@ import 'package:ad_camp/view/screens/campaign_details/campaign_details_screen.da
 import 'package:flutter/material.dart';
 
 class CampaignOverviewCard extends StatelessWidget {
-  const CampaignOverviewCard({super.key, required this.status});
-  final CampaignStatusEnum status;
+  const CampaignOverviewCard({super.key, required this.campaign});
+  final Campaign campaign;
 
   @override
   Widget build(BuildContext context) {
@@ -31,35 +33,50 @@ class CampaignOverviewCard extends StatelessWidget {
           mainAxisAlignment: .start,
           crossAxisAlignment: .start,
           children: [
-            CampaignCardHeader(status: status),
+            CampaignCardHeader(
+              status: campaign.status != null
+                  ? CampaignStatusHelper.getStatusEnum(campaign.status!)
+                  : null,
+              campaignName: campaign.name,
+              objective: campaign.objective,
+              thumbNailUrl: campaign.thumbnail,
+            ),
             SizedBox(height: 13),
-            CampaignSpendSection(),
+            CampaignSpendSection(
+              budget: campaign.budget,
+              spend: campaign.spend,
+              budgetUtilization: campaign.budgetUtilization,
+              currency: campaign.currency,
+            ),
             SizedBox(height: 18),
             Row(
               spacing: 10,
               children: [
-                Expanded(
-                  child: CampaignMetricCard(
-                    icon: ImageConstants.view,
-                    value: "250K",
-                    label: "Impressions",
+                if (campaign.impressions != null)
+                  Expanded(
+                    child: CampaignMetricCard(
+                      icon: ImageConstants.view,
+                      value: campaign.impressions!.toKMB(),
+                      label: "Impressions",
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: CampaignMetricCard(
-                    icon: ImageConstants.cursor,
-                    value: "6.2K",
-                    label: "Clicks",
+                if (campaign.clicks != null)
+                  Expanded(
+                    child: CampaignMetricCard(
+                      icon: ImageConstants.cursor,
+                      value: campaign.clicks!.toKMB(),
+                      label: "Clicks",
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: CampaignMetricCard(
-                    icon: ImageConstants.tradeUp,
-                    value: "2.48%",
-                    label: "CTR",
-                    suffix: Icon(Icons.info_outline, size: 10, color: ColorConstants.starDust),
+                if (campaign.ctr != null)
+                  Expanded(
+                    child: CampaignMetricCard(
+                      icon: ImageConstants.tradeUp,
+                      value: "${campaign.ctr!.toStringAsFixed(2)}%",
+                      label: "CTR",
+                      suffix: Icon(Icons.info_outline, size: 10, color: ColorConstants.starDust),
+                    ),
                   ),
-                ),
               ],
             ),
             SizedBox(height: 18),
@@ -71,13 +88,13 @@ class CampaignOverviewCard extends StatelessWidget {
                 CampaignBottomInfoSection(
                   icon: ImageConstants.calendar,
                   label: "Start Date",
-                  value: DateTime.now().formattedDate,
+                  value: StringHelpers.formatDate(campaign.startDate.toString()),
                 ),
-                CampaignBottomInfoSection(
-                  icon: ImageConstants.target,
-                  label: "All Audience",
-                  value: "All Users, KSA",
-                ),
+                // CampaignBottomInfoSection(
+                //   icon: ImageConstants.target,
+                //   label: "All Audience",
+                //   value: "All Users, KSA",
+                // ),
               ],
             ),
           ],

@@ -3,3 +3,8 @@ enum CampaignStatusEnum {
   paused,
   ended,
 }
+enum CampaignObjectiveEnum {
+  awareness,
+  consideration,
+  conversion,
+}

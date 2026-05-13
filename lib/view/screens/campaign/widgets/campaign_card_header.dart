@@ -3,12 +3,19 @@ import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_status_card.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ad_camp/view/widgets/image_widget.dart';
 import 'package:flutter/material.dart';
 
 class CampaignCardHeader extends StatelessWidget {
-  const CampaignCardHeader({super.key, required this.status});
-  final CampaignStatusEnum status;
+  const CampaignCardHeader({
+    super.key,
+    this.status,
+    this.campaignName,
+    this.objective,
+    this.thumbNailUrl,
+  });
+  final CampaignStatusEnum? status;
+  final String? campaignName, objective, thumbNailUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +23,7 @@ class CampaignCardHeader extends StatelessWidget {
       mainAxisAlignment: .start,
       crossAxisAlignment: .center,
       children: [
-        CachedNetworkImage(
-          imageUrl: ImageConstants.sampleImage,
-          height: 41,
-          width: 41,
-          fit: BoxFit.cover,
-        ),
+        ImageWidget(imageUrl: thumbNailUrl, height: 41, width: 41),
         SizedBox(width: 4),
         SizedBox(
           height: 41,
@@ -30,11 +32,7 @@ class CampaignCardHeader extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               Expanded(
-                child: Text(
-                  "Winter Sale Conversion",
-                  style: TextStyleConstants.f12w600,
-                  maxLines: 2,
-                ),
+                child: Text(campaignName ?? "", style: TextStyleConstants.f12w600, maxLines: 2),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
@@ -43,7 +41,7 @@ class CampaignCardHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  "Conversion",
+                  objective ?? "",
                   style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.topaz),
                 ),
               ),
@@ -51,7 +49,7 @@ class CampaignCardHeader extends StatelessWidget {
           ),
         ),
         Spacer(),
-        CampaignStatusCard(status: status),
+        status != null ? CampaignStatusCard(status: status!) : SizedBox(),
         SizedBox(width: 3),
         Icon(Icons.more_horiz, size: 16, color: ColorConstants.whiteSmoke.withValues(alpha: 0.7)),
       ],
