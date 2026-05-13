@@ -2,9 +2,14 @@ import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class CtrForecastCard extends StatelessWidget {
+class CtrForecastCard extends StatefulWidget {
   const CtrForecastCard({super.key});
 
+  @override
+  State<CtrForecastCard> createState() => _CtrForecastCardState();
+}
+
+class _CtrForecastCardState extends State<CtrForecastCard> {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> historicalData = [
@@ -94,7 +99,7 @@ class CtrForecastCard extends StatelessWidget {
               primaryXAxis: NumericAxis(
                 minimum: 0,
                 maximum: 28,
-                interval:2,
+                interval: 2,
                 majorGridLines: const MajorGridLines(width: 0),
                 axisLine: const AxisLine(color: Colors.white10),
                 labelStyle: const TextStyle(color: Colors.white60),
