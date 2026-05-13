@@ -29,7 +29,7 @@ class CampaignScreen extends StatelessWidget {
                     data.filteredList.campaigns != null && data.filteredList.campaigns!.isNotEmpty
                     ? Expanded(
                         child: RefreshIndicator(
-                          onRefresh: () async {},
+                          onRefresh: () => ref.refresh(campaignDataSourceControllerProvider.future),
                           child: ListView.separated(
                             itemCount: data.filteredList.campaigns!.length,
                             itemBuilder: (context, index) =>
