@@ -1,4 +1,4 @@
-import 'package:ad_camp/core/constants/campaign_status_enum.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/utils/campaign_status_helper.dart';

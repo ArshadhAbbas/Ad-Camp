@@ -1,12 +1,14 @@
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
+import 'package:ad_camp/utils/num_extensions.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class TotalSpendCard extends StatelessWidget {
-  const TotalSpendCard({super.key});
+  const TotalSpendCard({super.key, required this.totalSpend});
+  final int totalSpend;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class TotalSpendCard extends StatelessWidget {
                       crossAxisAlignment: .center,
                       spacing: 4,
                       children: [
-                        Text("3,200", style: TextStyleConstants.f14w600),
+                        Text(totalSpend.formatCompactNumber(), style: TextStyleConstants.f14w600),
                         Text(
                           "SAR",
                           style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.cloud),

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension NumExtensions on num {
   String toKMB() {
     if (this >= 1000000000) {
@@ -9,5 +11,10 @@ extension NumExtensions on num {
     } else {
       return toString();
     }
+  }
+
+  String formatCompactNumber() {
+    NumberFormat usFormatter = NumberFormat.decimalPattern('en_US');
+    return usFormatter.format(this);
   }
 }

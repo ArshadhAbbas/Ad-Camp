@@ -17,7 +17,7 @@ final class SpendSummaryDateRangeControllerProvider
     extends
         $NotifierProvider<
           SpendSummaryDateRangeController,
-          SpendSummaryDateRangeEnum
+          SpendSummaryRangeEnum
         > {
   SpendSummaryDateRangeControllerProvider._()
     : super(
@@ -38,30 +38,29 @@ final class SpendSummaryDateRangeControllerProvider
   SpendSummaryDateRangeController create() => SpendSummaryDateRangeController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SpendSummaryDateRangeEnum value) {
+  Override overrideWithValue(SpendSummaryRangeEnum value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SpendSummaryDateRangeEnum>(value),
+      providerOverride: $SyncValueProvider<SpendSummaryRangeEnum>(value),
     );
   }
 }
 
 String _$spendSummaryDateRangeControllerHash() =>
-    r'9440f31fdef246b711a2ef6e3714269ca2d89228';
+    r'f21df973be490689f4a8224bd014f5f92ca994be';
 
 abstract class _$SpendSummaryDateRangeController
-    extends $Notifier<SpendSummaryDateRangeEnum> {
-  SpendSummaryDateRangeEnum build();
+    extends $Notifier<SpendSummaryRangeEnum> {
+  SpendSummaryRangeEnum build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref =
-        this.ref as $Ref<SpendSummaryDateRangeEnum, SpendSummaryDateRangeEnum>;
+    final ref = this.ref as $Ref<SpendSummaryRangeEnum, SpendSummaryRangeEnum>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<SpendSummaryDateRangeEnum, SpendSummaryDateRangeEnum>,
-              SpendSummaryDateRangeEnum,
+              AnyNotifier<SpendSummaryRangeEnum, SpendSummaryRangeEnum>,
+              SpendSummaryRangeEnum,
               Object?,
               Object?
             >;

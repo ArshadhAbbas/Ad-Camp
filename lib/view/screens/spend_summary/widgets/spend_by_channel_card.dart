@@ -1,18 +1,16 @@
 import 'package:ad_camp/core/constants/text_style_constants.dart';
+import 'package:ad_camp/models/chart_data/chart_data.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SpendByChannelCard extends StatelessWidget {
-  const SpendByChannelCard({super.key});
+  const SpendByChannelCard({super.key, required this.totalSpend, required this.chartData});
+  final double? totalSpend;
+  final List<ChartData>? chartData;
 
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData('David', 25, Colors.blue),
-      ChartData('Steve', 38, Colors.green),
-      ChartData('Others', 52, Colors.yellow),
-    ];
     return AppCard(
       margin: EdgeInsetsGeometry.symmetric(horizontal: 20),
       child: Column(
@@ -41,51 +39,47 @@ class SpendByChannelCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: chartData
-                        .map(
-                          (data) => Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 16,
-                                      height: 16,
-                                      decoration: BoxDecoration(
-                                        color: data.color,
-                                        shape: BoxShape.circle,
+                if (chartData != null)
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: chartData!
+                          .map(
+                            (data) => Expanded(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 16,
+                                        height: 16,
+                                        decoration: BoxDecoration(
+                                          color: data.color,
+                                          shape: BoxShape.circle,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(data.x, style: TextStyleConstants.f12w400),
-                                    Spacer(),
-                                    Text("${data.y}%", style: TextStyleConstants.f12w400),
-                                  ],
-                                ),
-                                Divider(),
-                              ],
+                                      SizedBox(width: 8),
+                                      Text(data.x, style: TextStyleConstants.f12w400),
+                                      Spacer(),
+                                      Text(
+                                        "${data.y.toStringAsFixed(2)}%",
+                                        style: TextStyleConstants.f12w400,
+                                      ),
+                                    ],
+                                  ),
+                                  Divider(),
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                    ),
                   ),
-                ),
               ],
             ),
           ),
-          SizedBox(),
         ],
       ),
     );
   }
-}
-
-class ChartData {
-  ChartData(this.x, this.y, [this.color]);
-  final String x;
-  final double y;
-  final Color? color;
 }

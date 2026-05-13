@@ -17,4 +17,7 @@ class ImageConstants {
   static const String calender = 'assets/icons/calender.svg';
   static const String noData = 'assets/icons/no_data.svg';
   static const String wallet = 'assets/icons/wallet.svg';
+  static const String gift = 'assets/icons/gift.svg';
+  static const String megaphone = 'assets/icons/megaphone.svg';
+  static const String shoppingCart = 'assets/icons/shopping_cart.svg';
 }

@@ -1,4 +1,4 @@
-import 'package:ad_camp/core/constants/campaign_status_enum.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 
 class CampaignStatusHelper {
   static String getStatusText(CampaignStatusEnum status) {

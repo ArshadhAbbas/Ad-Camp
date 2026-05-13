@@ -1,5 +1,5 @@
 import 'package:ad_camp/controller/campaign_data_source_controller/campaign_data_source/campaign_data_source_controller.dart';
-import 'package:ad_camp/core/constants/campaign_status_enum.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/utils/string_helpers.dart';
