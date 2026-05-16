@@ -1,0 +1,1 @@
+enum AnomalyEnums { spendSpike, ctrDrop }

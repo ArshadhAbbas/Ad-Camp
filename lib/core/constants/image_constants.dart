@@ -9,6 +9,7 @@ class ImageConstants {
   static const String calendar = 'assets/icons/calender.svg';
   static const String cursor = 'assets/icons/cursor.svg';
   static const String tradeUp = 'assets/icons/trade_up.svg';
+  static const String tradeDown = 'assets/icons/trade_down.svg';
   static const String target = 'assets/icons/target.svg';
   static const String tvIcon = 'assets/icons/tv_icon.svg';
   static const String chartIncrease = 'assets/icons/chart_increase.svg';

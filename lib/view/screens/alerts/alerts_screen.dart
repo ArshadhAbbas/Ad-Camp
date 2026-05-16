@@ -1,12 +1,16 @@
+import 'package:ad_camp/controller/anomaly_controller/anomaly_controller.dart';
+import 'package:ad_camp/controller/notification_controller/notification_controller.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/screens/alerts/widgets/alert_anomaly_card.dart';
 import 'package:ad_camp/view/screens/alerts/widgets/alerts_header_card.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
+import 'package:ad_camp/view/widgets/app_loader.dart';
 import 'package:ad_camp/view/widgets/app_switch.dart';
 import 'package:ad_camp/view/widgets/topaz_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AlertsScreen extends StatelessWidget {
@@ -25,10 +29,22 @@ class AlertsScreen extends StatelessWidget {
           Text("Recent Anomalies", style: TextStyleConstants.f14w600),
           SizedBox(height: 6),
           Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) => AlertAnomalyCard(),
-              separatorBuilder: (context, index) => SizedBox(height: 10),
-              itemCount: 3,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final anomalies = ref.watch(anomalyControllerProvider);
+                return anomalies.when(
+                  data: (data) => data.isNotEmpty
+                      ? ListView.separated(
+                          itemBuilder: (context, index) =>
+                              AlertAnomalyCard(anomalyModel: data[index]),
+                          separatorBuilder: (context, index) => SizedBox(height: 10),
+                          itemCount: data.length,
+                        )
+                      : SizedBox(),
+                  error: (error, stackTrace) => Text(error.toString()),
+                  loading: () => Center(child: AppLoader(size: 30)),
+                );
+              },
             ),
           ),
           SizedBox(height: 16),
@@ -53,8 +69,23 @@ class AlertsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Switch(value: true, onChanged: (val) {}, padding: EdgeInsets.zero),
-                AppSwitch(onChanged: (val) {}),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final notificationStatus = ref.watch(notificationControllerProvider);
+                    return notificationStatus.when(
+                      data: (data) => AppSwitch(
+                        onChanged: (val) {
+                          ref.read(notificationControllerProvider.notifier).changeNotification(val);
+                        },
+                        value: data,
+                      ),
+                      error: (error, stackTrace) => SizedBox.shrink(),
+                      loading: () {
+                        return Center(child: AppLoader(size: 20));
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           ),
