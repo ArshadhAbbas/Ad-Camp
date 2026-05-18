@@ -1,6 +1,8 @@
+import 'package:ad_camp/controller/campaign_details_controller/campaign_details_controller.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
+import 'package:ad_camp/utils/num_extensions.dart';
 import 'package:ad_camp/view/screens/campaign_details/widgets/budget_recommendation_card.dart';
 import 'package:ad_camp/view/screens/campaign_details/widgets/campaign_details_appbar.dart';
 import 'package:ad_camp/view/screens/campaign_details/widgets/campaign_details_metric_card.dart';
@@ -8,74 +10,90 @@ import 'package:ad_camp/view/screens/campaign_details/widgets/ctr_forcast_card.d
 import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:ad_camp/view/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CampaignDetailsScreen extends StatelessWidget {
-  const CampaignDetailsScreen({super.key});
+class CampaignDetailsScreen extends ConsumerWidget {
+  const CampaignDetailsScreen({super.key, required this.campaignId});
+  final String campaignId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final campaignDetailsModel = ref.watch(campaignDetailsControllerProvider(campid: campaignId));
     return Scaffold(
       appBar: CampaignDetailsAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                spacing: 5,
-                children: const [
-                  Expanded(
-                    child: CampaignDetailsMetricCard(
-                      icon: ImageConstants.view,
-                      value: "150K",
-                      label: "Impressions",
-                    ),
+          child: campaignDetailsModel.when(
+            data: (data) {
+              final campaignDetails = data.campaignDetails;
+              final campaignHistory = data.campaignHistory;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    spacing: 5,
+                    children: [
+                      if (campaignDetails.campaign?.impressions != null)
+                        Expanded(
+                          child: CampaignDetailsMetricCard(
+                            icon: ImageConstants.view,
+                            value: campaignDetails.campaign!.impressions!.toKMB(),
+                            label: "Impressions",
+                          ),
+                        ),
+                      if (campaignDetails.campaign?.clicks != null)
+                        Expanded(
+                          child: CampaignDetailsMetricCard(
+                            icon: ImageConstants.cursor,
+                            value: campaignDetails.campaign!.clicks!.toKMB(),
+                            label: "Clicks",
+                          ),
+                        ),
+                      if (campaignDetails.campaign?.ctr != null)
+                        Expanded(
+                          child: CampaignDetailsMetricCard(
+                            icon: ImageConstants.tradeUp,
+                            value: "${campaignDetails.campaign?.ctr}%",
+                            label: "CTR",
+                          ),
+                        ),
+                      if (campaignDetails.campaign?.spend != null)
+                        Expanded(
+                          child: CampaignDetailsMetricCard(
+                            icon: ImageConstants.wallet,
+                            value:
+                                "${campaignDetails.campaign!.spend!.formatCompactNumber()} ${campaignDetails.campaign!.currency}SAR",
+                            label: "Total spend",
+                          ),
+                        ),
+                    ],
                   ),
-                  Expanded(
-                    child: CampaignDetailsMetricCard(
-                      icon: ImageConstants.cursor,
-                      value: "6.2K",
-                      label: "Clicks",
-                    ),
-                  ),
-                  Expanded(
-                    child: CampaignDetailsMetricCard(
-                      icon: ImageConstants.tradeUp,
-                      value: "2.48%",
-                      label: "CTR",
-                    ),
-                  ),
-                  Expanded(
-                    child: CampaignDetailsMetricCard(
-                      icon: ImageConstants.wallet,
-                      value: "7,800 SAR",
-                      label: "Total spend",
-                    ),
+                  const SizedBox(height: 18),
+                  const CtrForecastCard(),
+                  const SizedBox(height: 18),
+                  const BudgetRecommendationCard(),
+
+                  const SizedBox(height: 22),
+
+                  Text("States", style: TextStyleConstants.f16w600),
+
+                  const SizedBox(height: 16),
+
+                  Row(
+                    children: const [
+                      Expanded(child: _LoadingStateCard()),
+                      SizedBox(width: 12),
+                      Expanded(child: _NoDataStateCard()),
+                      SizedBox(width: 12),
+                      Expanded(child: _ErrorStateCard()),
+                    ],
                   ),
                 ],
-              ),
-              const SizedBox(height: 18),
-              const CtrForecastCard(),
-              const SizedBox(height: 18),
-              const BudgetRecommendationCard(),
-
-              const SizedBox(height: 22),
-
-              Text("States", style: TextStyleConstants.f16w600),
-
-              const SizedBox(height: 16),
-
-              Row(
-                children: const [
-                  Expanded(child: _LoadingStateCard()),
-                  SizedBox(width: 12),
-                  Expanded(child: _NoDataStateCard()),
-                  SizedBox(width: 12),
-                  Expanded(child: _ErrorStateCard()),
-                ],
-              ),
-            ],
+              );
+            },
+            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            loading: () => Center(child: AppLoader(size: 30)),
           ),
         ),
       ),
@@ -112,7 +130,7 @@ class _LoadingStateCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 28),
-          Center(child: AppLoader(size: 50,)),
+          Center(child: AppLoader(size: 50)),
         ],
       ),
     );

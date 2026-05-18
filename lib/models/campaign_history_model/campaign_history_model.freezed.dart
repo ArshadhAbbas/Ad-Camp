@@ -1,0 +1,563 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'campaign_history_model.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$CampaignHistoryModel {
+
+@JsonKey(name: "campaign_id") String? get campaignId;@JsonKey(name: "data_points") int? get dataPoints;@JsonKey(name: "history") List<History>? get history;
+/// Create a copy of CampaignHistoryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CampaignHistoryModelCopyWith<CampaignHistoryModel> get copyWith => _$CampaignHistoryModelCopyWithImpl<CampaignHistoryModel>(this as CampaignHistoryModel, _$identity);
+
+  /// Serializes this CampaignHistoryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CampaignHistoryModel&&(identical(other.campaignId, campaignId) || other.campaignId == campaignId)&&(identical(other.dataPoints, dataPoints) || other.dataPoints == dataPoints)&&const DeepCollectionEquality().equals(other.history, history));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,campaignId,dataPoints,const DeepCollectionEquality().hash(history));
+
+@override
+String toString() {
+  return 'CampaignHistoryModel(campaignId: $campaignId, dataPoints: $dataPoints, history: $history)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CampaignHistoryModelCopyWith<$Res>  {
+  factory $CampaignHistoryModelCopyWith(CampaignHistoryModel value, $Res Function(CampaignHistoryModel) _then) = _$CampaignHistoryModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: "campaign_id") String? campaignId,@JsonKey(name: "data_points") int? dataPoints,@JsonKey(name: "history") List<History>? history
+});
+
+
+
+
+}
+/// @nodoc
+class _$CampaignHistoryModelCopyWithImpl<$Res>
+    implements $CampaignHistoryModelCopyWith<$Res> {
+  _$CampaignHistoryModelCopyWithImpl(this._self, this._then);
+
+  final CampaignHistoryModel _self;
+  final $Res Function(CampaignHistoryModel) _then;
+
+/// Create a copy of CampaignHistoryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? campaignId = freezed,Object? dataPoints = freezed,Object? history = freezed,}) {
+  return _then(_self.copyWith(
+campaignId: freezed == campaignId ? _self.campaignId : campaignId // ignore: cast_nullable_to_non_nullable
+as String?,dataPoints: freezed == dataPoints ? _self.dataPoints : dataPoints // ignore: cast_nullable_to_non_nullable
+as int?,history: freezed == history ? _self.history : history // ignore: cast_nullable_to_non_nullable
+as List<History>?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [CampaignHistoryModel].
+extension CampaignHistoryModelPatterns on CampaignHistoryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CampaignHistoryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CampaignHistoryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CampaignHistoryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _CampaignHistoryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CampaignHistoryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CampaignHistoryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "campaign_id")  String? campaignId, @JsonKey(name: "data_points")  int? dataPoints, @JsonKey(name: "history")  List<History>? history)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CampaignHistoryModel() when $default != null:
+return $default(_that.campaignId,_that.dataPoints,_that.history);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "campaign_id")  String? campaignId, @JsonKey(name: "data_points")  int? dataPoints, @JsonKey(name: "history")  List<History>? history)  $default,) {final _that = this;
+switch (_that) {
+case _CampaignHistoryModel():
+return $default(_that.campaignId,_that.dataPoints,_that.history);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "campaign_id")  String? campaignId, @JsonKey(name: "data_points")  int? dataPoints, @JsonKey(name: "history")  List<History>? history)?  $default,) {final _that = this;
+switch (_that) {
+case _CampaignHistoryModel() when $default != null:
+return $default(_that.campaignId,_that.dataPoints,_that.history);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CampaignHistoryModel implements CampaignHistoryModel {
+  const _CampaignHistoryModel({@JsonKey(name: "campaign_id") this.campaignId, @JsonKey(name: "data_points") this.dataPoints, @JsonKey(name: "history") final  List<History>? history}): _history = history;
+  factory _CampaignHistoryModel.fromJson(Map<String, dynamic> json) => _$CampaignHistoryModelFromJson(json);
+
+@override@JsonKey(name: "campaign_id") final  String? campaignId;
+@override@JsonKey(name: "data_points") final  int? dataPoints;
+ final  List<History>? _history;
+@override@JsonKey(name: "history") List<History>? get history {
+  final value = _history;
+  if (value == null) return null;
+  if (_history is EqualUnmodifiableListView) return _history;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+
+/// Create a copy of CampaignHistoryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CampaignHistoryModelCopyWith<_CampaignHistoryModel> get copyWith => __$CampaignHistoryModelCopyWithImpl<_CampaignHistoryModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CampaignHistoryModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CampaignHistoryModel&&(identical(other.campaignId, campaignId) || other.campaignId == campaignId)&&(identical(other.dataPoints, dataPoints) || other.dataPoints == dataPoints)&&const DeepCollectionEquality().equals(other._history, _history));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,campaignId,dataPoints,const DeepCollectionEquality().hash(_history));
+
+@override
+String toString() {
+  return 'CampaignHistoryModel(campaignId: $campaignId, dataPoints: $dataPoints, history: $history)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CampaignHistoryModelCopyWith<$Res> implements $CampaignHistoryModelCopyWith<$Res> {
+  factory _$CampaignHistoryModelCopyWith(_CampaignHistoryModel value, $Res Function(_CampaignHistoryModel) _then) = __$CampaignHistoryModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: "campaign_id") String? campaignId,@JsonKey(name: "data_points") int? dataPoints,@JsonKey(name: "history") List<History>? history
+});
+
+
+
+
+}
+/// @nodoc
+class __$CampaignHistoryModelCopyWithImpl<$Res>
+    implements _$CampaignHistoryModelCopyWith<$Res> {
+  __$CampaignHistoryModelCopyWithImpl(this._self, this._then);
+
+  final _CampaignHistoryModel _self;
+  final $Res Function(_CampaignHistoryModel) _then;
+
+/// Create a copy of CampaignHistoryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? campaignId = freezed,Object? dataPoints = freezed,Object? history = freezed,}) {
+  return _then(_CampaignHistoryModel(
+campaignId: freezed == campaignId ? _self.campaignId : campaignId // ignore: cast_nullable_to_non_nullable
+as String?,dataPoints: freezed == dataPoints ? _self.dataPoints : dataPoints // ignore: cast_nullable_to_non_nullable
+as int?,history: freezed == history ? _self._history : history // ignore: cast_nullable_to_non_nullable
+as List<History>?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$History {
+
+@JsonKey(name: "date") DateTime? get date;@JsonKey(name: "impressions") int? get impressions;@JsonKey(name: "clicks") int? get clicks;@JsonKey(name: "ctr") double? get ctr;
+/// Create a copy of History
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HistoryCopyWith<History> get copyWith => _$HistoryCopyWithImpl<History>(this as History, _$identity);
+
+  /// Serializes this History to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is History&&(identical(other.date, date) || other.date == date)&&(identical(other.impressions, impressions) || other.impressions == impressions)&&(identical(other.clicks, clicks) || other.clicks == clicks)&&(identical(other.ctr, ctr) || other.ctr == ctr));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,date,impressions,clicks,ctr);
+
+@override
+String toString() {
+  return 'History(date: $date, impressions: $impressions, clicks: $clicks, ctr: $ctr)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HistoryCopyWith<$Res>  {
+  factory $HistoryCopyWith(History value, $Res Function(History) _then) = _$HistoryCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: "date") DateTime? date,@JsonKey(name: "impressions") int? impressions,@JsonKey(name: "clicks") int? clicks,@JsonKey(name: "ctr") double? ctr
+});
+
+
+
+
+}
+/// @nodoc
+class _$HistoryCopyWithImpl<$Res>
+    implements $HistoryCopyWith<$Res> {
+  _$HistoryCopyWithImpl(this._self, this._then);
+
+  final History _self;
+  final $Res Function(History) _then;
+
+/// Create a copy of History
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? date = freezed,Object? impressions = freezed,Object? clicks = freezed,Object? ctr = freezed,}) {
+  return _then(_self.copyWith(
+date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime?,impressions: freezed == impressions ? _self.impressions : impressions // ignore: cast_nullable_to_non_nullable
+as int?,clicks: freezed == clicks ? _self.clicks : clicks // ignore: cast_nullable_to_non_nullable
+as int?,ctr: freezed == ctr ? _self.ctr : ctr // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [History].
+extension HistoryPatterns on History {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _History value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _History() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _History value)  $default,){
+final _that = this;
+switch (_that) {
+case _History():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _History value)?  $default,){
+final _that = this;
+switch (_that) {
+case _History() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "date")  DateTime? date, @JsonKey(name: "impressions")  int? impressions, @JsonKey(name: "clicks")  int? clicks, @JsonKey(name: "ctr")  double? ctr)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _History() when $default != null:
+return $default(_that.date,_that.impressions,_that.clicks,_that.ctr);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "date")  DateTime? date, @JsonKey(name: "impressions")  int? impressions, @JsonKey(name: "clicks")  int? clicks, @JsonKey(name: "ctr")  double? ctr)  $default,) {final _that = this;
+switch (_that) {
+case _History():
+return $default(_that.date,_that.impressions,_that.clicks,_that.ctr);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "date")  DateTime? date, @JsonKey(name: "impressions")  int? impressions, @JsonKey(name: "clicks")  int? clicks, @JsonKey(name: "ctr")  double? ctr)?  $default,) {final _that = this;
+switch (_that) {
+case _History() when $default != null:
+return $default(_that.date,_that.impressions,_that.clicks,_that.ctr);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _History implements History {
+  const _History({@JsonKey(name: "date") this.date, @JsonKey(name: "impressions") this.impressions, @JsonKey(name: "clicks") this.clicks, @JsonKey(name: "ctr") this.ctr});
+  factory _History.fromJson(Map<String, dynamic> json) => _$HistoryFromJson(json);
+
+@override@JsonKey(name: "date") final  DateTime? date;
+@override@JsonKey(name: "impressions") final  int? impressions;
+@override@JsonKey(name: "clicks") final  int? clicks;
+@override@JsonKey(name: "ctr") final  double? ctr;
+
+/// Create a copy of History
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HistoryCopyWith<_History> get copyWith => __$HistoryCopyWithImpl<_History>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HistoryToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _History&&(identical(other.date, date) || other.date == date)&&(identical(other.impressions, impressions) || other.impressions == impressions)&&(identical(other.clicks, clicks) || other.clicks == clicks)&&(identical(other.ctr, ctr) || other.ctr == ctr));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,date,impressions,clicks,ctr);
+
+@override
+String toString() {
+  return 'History(date: $date, impressions: $impressions, clicks: $clicks, ctr: $ctr)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HistoryCopyWith<$Res> implements $HistoryCopyWith<$Res> {
+  factory _$HistoryCopyWith(_History value, $Res Function(_History) _then) = __$HistoryCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: "date") DateTime? date,@JsonKey(name: "impressions") int? impressions,@JsonKey(name: "clicks") int? clicks,@JsonKey(name: "ctr") double? ctr
+});
+
+
+
+
+}
+/// @nodoc
+class __$HistoryCopyWithImpl<$Res>
+    implements _$HistoryCopyWith<$Res> {
+  __$HistoryCopyWithImpl(this._self, this._then);
+
+  final _History _self;
+  final $Res Function(_History) _then;
+
+/// Create a copy of History
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? date = freezed,Object? impressions = freezed,Object? clicks = freezed,Object? ctr = freezed,}) {
+  return _then(_History(
+date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime?,impressions: freezed == impressions ? _self.impressions : impressions // ignore: cast_nullable_to_non_nullable
+as int?,clicks: freezed == clicks ? _self.clicks : clicks // ignore: cast_nullable_to_non_nullable
+as int?,ctr: freezed == ctr ? _self.ctr : ctr // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+
+}
+
+// dart format on

@@ -19,7 +19,14 @@ class CampaignOverviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CampaignDetailsScreen()));
+        if (campaign.id != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CampaignDetailsScreen(campaignId: campaign.id!),
+            ),
+          );
+        }
       },
       child: Container(
         padding: EdgeInsets.all(12),

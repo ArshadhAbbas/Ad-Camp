@@ -16,4 +16,26 @@ class CampaignDataSource {
       throw Exception('Failed to load campaigns: $e');
     }
   }
+
+  Future fetchCampaignDetails({required String campId}) async {
+    try {
+      final response = await dioService.get("${Env.campaignsEndpoint}/$campId");
+      return jsonDecode(response.data);
+    } catch (e) {
+      log('Error fetching campaign details: $e');
+      throw Exception('Failed to load campaign details: $e');
+    }
+  }
+
+  Future fetchCampaignHistory({required String campaignId}) async {
+    try {
+      final response = await dioService.get(
+        "${Env.campaignsEndpoint}$campaignId${Env.historyEndPoint}",
+      );
+      return jsonDecode(response.data);
+    } catch (e) {
+      log('Error fetching campaign history: $e');
+      throw Exception('Failed to load campaign history: $e');
+    }
+  }
 }

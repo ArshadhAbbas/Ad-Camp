@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:ad_camp/core/services/dio_service.dart';
 import 'package:ad_camp/env.dart';
-import 'package:ad_camp/models/anomaly_model/anomaly_model.dart';
 import 'package:ad_camp/models/live_mterics_model/live_metrics_model.dart';
 
 class AnomalyDataSource {
