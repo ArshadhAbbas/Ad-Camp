@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:ad_camp/core/services/dio_service.dart';
 import 'package:ad_camp/env.dart';
+import 'package:ad_camp/models/campaign_history_model/campaign_history_model.dart';
 
 class CampaignDataSource {
   final dioService = DioService();
@@ -36,6 +37,19 @@ class CampaignDataSource {
     } catch (e) {
       log('Error fetching campaign history: $e');
       throw Exception('Failed to load campaign history: $e');
+    }
+  }
+
+  Future fetchForecast({required CampaignHistoryModel history}) async {
+    try {
+      final response = await dioService.post(
+        Env.forecastEndpoint,
+        data: {...history.toJson(), "horizon_days": 7},
+      );
+      return jsonDecode(response.data);
+    } catch (e) {
+      log('Error fetching forecast data: $e');
+      throw Exception('Failed to load forecast data: $e');
     }
   }
 }

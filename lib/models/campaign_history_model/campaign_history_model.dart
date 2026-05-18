@@ -15,6 +15,7 @@ abstract class CampaignHistoryModel with _$CampaignHistoryModel {
     }) = _CampaignHistoryModel;
 
     factory CampaignHistoryModel.fromJson(Map<String, dynamic> json) => _$CampaignHistoryModelFromJson(json);
+    
 }
 
 @freezed

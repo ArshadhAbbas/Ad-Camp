@@ -6,3 +6,14 @@ class ChartData {
   final double y;
   final Color? color;
 }
+
+
+class RangeData {
+  final double x;
+
+  final double high;
+
+  final double low;
+
+  RangeData(this.x, this.high, this.low);
+}

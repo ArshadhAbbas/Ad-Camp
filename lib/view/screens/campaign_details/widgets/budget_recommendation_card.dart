@@ -1,12 +1,15 @@
 import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
+import 'package:ad_camp/utils/string_helpers.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BudgetRecommendationCard extends StatelessWidget {
-  const BudgetRecommendationCard({super.key});
+  const BudgetRecommendationCard({super.key, required this.isUpwardTrend, required this.message});
+  final bool isUpwardTrend;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,13 @@ class BudgetRecommendationCard extends StatelessWidget {
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: ColorConstants.jadeGreen.withValues(alpha: 0.15),
+              color: (isUpwardTrend ? ColorConstants.jadeGreen : ColorConstants.fuzzyWuzzyBrown)
+                  .withValues(alpha: 0.15),
             ),
-            child: const Icon(Icons.trending_up, color: ColorConstants.jadeGreen),
+            child: Icon(
+              isUpwardTrend ? Icons.trending_up : Icons.trending_down,
+              color: isUpwardTrend ? ColorConstants.jadeGreen : ColorConstants.fuzzyWuzzyBrown,
+            ),
           ),
           const SizedBox(width: 6),
           Expanded(
@@ -36,7 +43,7 @@ class BudgetRecommendationCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "CTR is predicted to increase by 12%",
+                      message.messageTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyleConstants.f12w600,
@@ -56,7 +63,7 @@ class BudgetRecommendationCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "Consider increasing budget to maximize results",
+                          message.messageSubtitle,
                           style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.cloud),
                         ),
                       ),

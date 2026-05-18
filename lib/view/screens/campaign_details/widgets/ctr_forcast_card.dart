@@ -1,75 +1,35 @@
+/// ctr_forecast_card.dart
+library;
+
+import 'package:ad_camp/controller/campaign_details_controller/campaign_details_controller.dart';
+import 'package:ad_camp/core/constants/color_constants.dart';
+import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
+import 'package:ad_camp/view/widgets/dashed_line_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class CtrForecastCard extends StatefulWidget {
-  const CtrForecastCard({super.key});
+class CtrForecastCard extends StatelessWidget {
+  const CtrForecastCard({super.key, required this.data});
 
-  @override
-  State<CtrForecastCard> createState() => _CtrForecastCardState();
-}
+  final CampaignDetailsControllerModel data;
 
-class _CtrForecastCardState extends State<CtrForecastCard> {
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> historicalData = [
-      ChartData(0, 2.7),
-      ChartData(1, 2.4),
-      ChartData(2, 3.2),
-      ChartData(3, 2.7),
-      ChartData(4, 3.6),
-      ChartData(5, 2.9),
-      ChartData(6, 4.1),
-      ChartData(7, 3.4),
-      ChartData(8, 2.7),
-      ChartData(9, 3.1),
-      ChartData(10, 3.5),
-      ChartData(11, 3.3),
-      ChartData(12, 3.0),
-      ChartData(13, 3.9),
-      ChartData(14, 3.2),
-      ChartData(15, 3.5),
-      ChartData(16, 4.1),
-    ];
-
-    final List<RangeData> forecastRange = [
-      RangeData(16, 4.1, 4.1),
-      RangeData(17, 4.2, 3.4),
-      RangeData(18, 4.1, 3.5),
-      RangeData(19, 4.4, 3.6),
-      RangeData(20, 4.6, 3.8),
-      RangeData(21, 4.4, 3.6),
-      RangeData(22, 3.8, 2.9),
-      RangeData(23, 3.9, 3.1),
-      RangeData(24, 3.8, 3.2),
-      RangeData(25, 3.5, 2.8),
-      RangeData(26, 3.8, 3.2),
-      RangeData(27, 3.5, 3.0),
-      RangeData(28, 4.0, 2.6),
-    ];
-
-    final List<ChartData> forecastLine = forecastRange
-        .map((e) => ChartData(e.x, (e.high + e.low) / 2))
-        .toList();
-
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Expanded(
-                child: Text(
-                  "CTR Performance & Forecast",
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-                ),
+              Expanded(
+                child: Text("CTR Performance & Forecast", style: TextStyleConstants.f16w600),
               ),
             ],
           ),
-
           const SizedBox(height: 20),
 
-          /// LEGEND SECTION
+          /// LEGEND
           Row(
             children: const [
               _ChartLegend(isDashed: false, title: "Historical CTR"),
@@ -79,11 +39,13 @@ class _CtrForecastCardState extends State<CtrForecastCard> {
           ),
 
           const SizedBox(height: 20),
-          const Text("CTR (%)", style: TextStyle(color: Colors.white60, fontSize: 14)),
+
+          Text(
+            "CTR (%)",
+            style: TextStyleConstants.f12w400.copyWith(color: ColorConstants.starDust),
+          ),
           const SizedBox(height: 16),
-
           Padding(padding: const EdgeInsets.only(left: 40), child: _buildAlignedHeaderLines()),
-
           SizedBox(
             height: 300,
             child: SfCartesianChart(
@@ -98,26 +60,21 @@ class _CtrForecastCardState extends State<CtrForecastCard> {
               ),
               primaryXAxis: NumericAxis(
                 minimum: 0,
-                maximum: 28,
-                interval: 2,
+                maximum: 100,
+                interval: 10,
                 majorGridLines: const MajorGridLines(width: 0),
                 axisLine: const AxisLine(color: Colors.white10),
                 labelStyle: const TextStyle(color: Colors.white60),
                 axisLabelFormatter: (details) {
-                  final labels = {
-                    0: "02 Jun",
-                    6: "09 Jun",
-                    12: "23 Jun",
-                    18: "29 Jun",
-                    22: "03 July",
-                    26: "10 July",
-                  };
-                  return ChartAxisLabel(labels[details.value.toInt()] ?? "", details.textStyle);
+                  return ChartAxisLabel(
+                    data.labels[details.value.round()] ?? "",
+                    details.textStyle,
+                  );
                 },
               ),
               primaryYAxis: NumericAxis(
                 minimum: 0,
-                maximum: 6,
+                maximum: 10,
                 interval: 2,
                 labelFormat: '{value}%',
                 majorGridLines: const MajorGridLines(width: 0),
@@ -125,42 +82,43 @@ class _CtrForecastCardState extends State<CtrForecastCard> {
                 labelStyle: const TextStyle(color: Colors.white60),
               ),
               annotations: <CartesianChartAnnotation>[
-                // Vertical Dashed Divider
                 CartesianChartAnnotation(
                   coordinateUnit: CoordinateUnit.point,
-                  x: 16,
-                  y: 3,
+                  x: 50,
+                  y: 5,
                   widget: CustomPaint(size: const Size(1, 200), painter: DashedLinePainter()),
                 ),
               ],
               series: <CartesianSeries>[
-                // Historical Area
-                SplineAreaSeries<ChartData, num>(
+                /// HISTORICAL
+                SplineAreaSeries<ForecastChartPoint, num>(
                   name: 'Historical',
-                  dataSource: historicalData,
-                  xValueMapper: (data, _) => data.x,
-                  yValueMapper: (data, _) => data.y,
-                  color: const Color(0xFF10D5F5).withOpacity(0.1),
-                  borderColor: const Color(0xFF10D5F5),
+                  dataSource: data.historicalChart,
+                  xValueMapper: (value, _) => value.x,
+                  yValueMapper: (value, _) => value.y,
+                  color: ColorConstants.topaz.withValues(alpha: 0.1),
+                  borderColor: ColorConstants.topaz,
                   borderWidth: 2,
                   enableTooltip: true,
                 ),
-                // Forecast Confidence Cloud
-                SplineRangeAreaSeries<RangeData, num>(
-                  dataSource: forecastRange,
-                  xValueMapper: (data, _) => data.x,
-                  highValueMapper: (data, _) => data.high,
-                  lowValueMapper: (data, _) => data.low,
-                  color: const Color(0xFF10D5F5).withOpacity(0.12),
-                  enableTooltip: false, // Hide tooltip for the cloud itself
+
+                /// RANGE AREA
+                SplineRangeAreaSeries<ForecastRangePoint, num>(
+                  dataSource: data.forecastRange,
+                  xValueMapper: (value, _) => value.x,
+                  highValueMapper: (value, _) => value.high,
+                  lowValueMapper: (value, _) => value.low,
+                  color: ColorConstants.topaz.withValues(alpha: 0.12),
+                  enableTooltip: false,
                 ),
-                // Forecast Dashed Line
-                SplineSeries<ChartData, num>(
+
+                /// FORECAST
+                SplineSeries<ForecastChartPoint, num>(
                   name: 'Forecast',
-                  dataSource: forecastLine,
-                  xValueMapper: (data, _) => data.x,
-                  yValueMapper: (data, _) => data.y,
-                  color: const Color(0xFF10D5F5),
+                  dataSource: data.forecastChart,
+                  xValueMapper: (value, _) => value.x,
+                  yValueMapper: (value, _) => value.y,
+                  color: ColorConstants.topaz,
                   dashArray: const [6, 4],
                   width: 2,
                   enableTooltip: true,
@@ -176,7 +134,6 @@ class _CtrForecastCardState extends State<CtrForecastCard> {
   Widget _buildAlignedHeaderLines() {
     const Color lineColor = Colors.white24;
     const TextStyle labelStyle = TextStyle(color: Colors.white38, fontSize: 11);
-
     return Row(
       children: [
         const Icon(Icons.arrow_left, size: 14, color: lineColor),
@@ -214,46 +171,16 @@ class _ChartLegend extends StatelessWidget {
               (i) => Container(
                 width: 5,
                 height: 2,
-                color: const Color(0xFF10D5F5),
+                color: ColorConstants.topaz,
                 margin: const EdgeInsets.only(right: 2),
               ),
             ),
           )
         else
-          Container(width: 20, height: 2, color: const Color(0xFF10D5F5)),
+          Container(width: 20, height: 2, color: ColorConstants.topaz),
         const SizedBox(width: 8),
         Text(title, style: const TextStyle(color: Colors.white70, fontSize: 12)),
       ],
     );
   }
-}
-
-class DashedLinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = Colors.white30
-      ..strokeWidth = 1;
-    double dashHeight = 5, dashSpace = 3, startY = 0;
-    while (startY < size.height) {
-      canvas.drawLine(Offset(0, startY), Offset(0, startY + dashHeight), paint);
-      startY += dashHeight + dashSpace;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class ChartData {
-  final double x;
-  final double y;
-  ChartData(this.x, this.y);
-}
-
-class RangeData {
-  final double x;
-  final double high;
-  final double low;
-  RangeData(this.x, this.high, this.low);
 }

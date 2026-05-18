@@ -1,5 +1,6 @@
 import 'package:ad_camp/controller/campaign_details_controller/campaign_details_controller.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/utils/num_extensions.dart';
@@ -13,14 +14,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CampaignDetailsScreen extends ConsumerWidget {
-  const CampaignDetailsScreen({super.key, required this.campaignId});
-  final String campaignId;
+  const CampaignDetailsScreen({
+    super.key,
+    required this.campaignId,
+    required this.title,
+    required this.campaignStatus,
+    required this.campaignObjective,
+  });
+  final String campaignId, title, campaignObjective;
+  final CampaignStatusEnum campaignStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final campaignDetailsModel = ref.watch(campaignDetailsControllerProvider(campid: campaignId));
     return Scaffold(
-      appBar: CampaignDetailsAppBar(),
+      appBar: CampaignDetailsAppBar(
+        title: title,
+        campaignObjective: campaignObjective,
+        campaignStatus: campaignStatus,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -28,6 +40,7 @@ class CampaignDetailsScreen extends ConsumerWidget {
             data: (data) {
               final campaignDetails = data.campaignDetails;
               final campaignHistory = data.campaignHistory;
+              final campaignForecast = data.forecast;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,16 +76,21 @@ class CampaignDetailsScreen extends ConsumerWidget {
                           child: CampaignDetailsMetricCard(
                             icon: ImageConstants.wallet,
                             value:
-                                "${campaignDetails.campaign!.spend!.formatCompactNumber()} ${campaignDetails.campaign!.currency}SAR",
+                                "${campaignDetails.campaign!.spend!.formatCompactNumber()} ${campaignDetails.campaign!.currency}",
                             label: "Total spend",
                           ),
                         ),
                     ],
                   ),
+                  if (data.forecast.forecast != null) ...[
+                    const SizedBox(height: 18),
+                    CtrForecastCard(data: data),
+                  ],
                   const SizedBox(height: 18),
-                  const CtrForecastCard(),
-                  const SizedBox(height: 18),
-                  const BudgetRecommendationCard(),
+                  BudgetRecommendationCard(
+                    isUpwardTrend: data.forecast.recommendation?.trend != "downward",
+                    message: data.forecast.recommendation?.message ?? "",
+                  ),
 
                   const SizedBox(height: 22),
 

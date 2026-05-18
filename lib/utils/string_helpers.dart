@@ -9,8 +9,17 @@ class StringHelpers {
 }
 
 extension StringExtensions on String {
- String toTitleCase() {
+  String toTitleCase() {
     if (isEmpty) return this;
     return this[0].toUpperCase() + substring(1).toLowerCase();
+  }
+  String get messageTitle => split(". ").first.trim();
+
+  String get messageSubtitle {
+    final parts = split(". ");
+    if (parts.length <= 1) {
+      return "";
+    }
+    return parts.sublist(1).join(". ").trim();
   }
 }

@@ -23,7 +23,12 @@ class CampaignOverviewCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CampaignDetailsScreen(campaignId: campaign.id!),
+              builder: (context) => CampaignDetailsScreen(
+                campaignId: campaign.id!,
+                title: campaign.name ?? "",
+                campaignObjective: campaign.objective ?? "",
+                campaignStatus: CampaignStatusHelper.getStatusEnum(campaign.status!),
+              ),
             ),
           );
         }
