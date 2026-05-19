@@ -37,6 +37,7 @@ class BottomNavBarScreen extends ConsumerWidget {
     return SafeArea(
       top: false,
       child: Scaffold(
+        drawer: Drawer(),
         appBar: UniversalAppbar(title: getTitle()),
         body: screens[ref.watch(bottomNavBarControllerProvider)],
         bottomNavigationBar: CustomBottomNavBar(),

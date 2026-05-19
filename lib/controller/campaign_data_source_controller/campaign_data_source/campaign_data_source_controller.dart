@@ -1,4 +1,5 @@
 import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
+import 'package:ad_camp/core/services/campaign_cache_service.dart';
 import 'package:ad_camp/data_source/campaign_data_source.dart';
 import 'package:ad_camp/models/campaigns_list_model/campaigns_list_model.dart';
 import 'package:ad_camp/repository/campaign_repository/campaign_repository.dart';
@@ -13,8 +14,16 @@ CampaignDataSource campaignDataSource(Ref ref) {
 }
 
 @riverpod
+CampaignCacheService cacheService(Ref ref) {
+  return CampaignCacheService();
+}
+
+@riverpod
 CampaignRepository campaignRepository(Ref ref) {
-  return CampaignRepositoryImpl(campaignDataSource: ref.watch(campaignDataSourceProvider));
+  return CampaignRepositoryImpl(
+    campaignDataSource: ref.watch(campaignDataSourceProvider),
+    cacheService: ref.watch(cacheServiceProvider),
+  );
 }
 
 class CampaignDataControllerModel {
@@ -28,12 +37,15 @@ class CampaignDataControllerModel {
 
   final String? searchText;
 
+  final bool isRefreshing;
+
   CampaignDataControllerModel({
     required this.originalList,
     required this.filteredList,
     this.selectedStatusFilter,
     this.selectedObjectiveFilter,
     this.searchText,
+    this.isRefreshing = false,
   });
 
   CampaignDataControllerModel copyWith({
@@ -42,6 +54,7 @@ class CampaignDataControllerModel {
     Object? selectedStatusFilter = _empty,
     Object? selectedObjectiveFilter = _empty,
     Object? searchText = _empty,
+    bool? isRefreshing,
   }) {
     return CampaignDataControllerModel(
       originalList: originalList ?? this.originalList,
@@ -57,6 +70,8 @@ class CampaignDataControllerModel {
           : selectedObjectiveFilter as CampaignObjectiveEnum?,
 
       searchText: searchText == _empty ? this.searchText : searchText as String?,
+
+      isRefreshing: isRefreshing ?? this.isRefreshing,
     );
   }
 }
@@ -69,9 +84,52 @@ class CampaignDataSourceController extends _$CampaignDataSourceController {
   Future<CampaignDataControllerModel> build() async {
     final repository = ref.watch(campaignRepositoryProvider);
 
-    final campaigns = await repository.fetchCampaigns();
+    final cached = repository.getCachedCampaigns();
 
-    return CampaignDataControllerModel(originalList: campaigns, filteredList: campaigns);
+    if (cached != null) {
+      Future.microtask(() async {
+        try {
+          state = AsyncValue.data(
+            CampaignDataControllerModel(
+              originalList: cached,
+              filteredList: cached,
+              isRefreshing: true,
+            ),
+          );
+          final fresh = await repository.fetchCampaigns();
+          state = AsyncValue.data(
+            CampaignDataControllerModel(
+              originalList: fresh,
+              filteredList: fresh,
+              isRefreshing: false,
+            ),
+          );
+        } catch (_) {
+          state = AsyncValue.data(
+            CampaignDataControllerModel(
+              originalList: cached,
+              filteredList: cached,
+              isRefreshing: false,
+            ),
+          );
+        }
+      });
+
+      return CampaignDataControllerModel(
+        originalList: cached,
+        filteredList: cached,
+        isRefreshing: true,
+      );
+    }
+
+
+    final fresh = await repository.fetchCampaigns();
+
+    return CampaignDataControllerModel(
+      originalList: fresh,
+      filteredList: fresh,
+      isRefreshing: false,
+    );
   }
 
   void filterStatus(CampaignStatusEnum? status) {

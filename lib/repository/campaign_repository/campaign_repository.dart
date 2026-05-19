@@ -5,6 +5,7 @@ import 'package:ad_camp/models/forecast_model/forecast_model.dart';
 
 abstract class CampaignRepository {
   Future<CampaignsListModel> fetchCampaigns();
+  CampaignsListModel? getCachedCampaigns();
   Future<CampaignDetailsModel> fetchCampaignDetails({required String campaignId});
   Future<CampaignHistoryModel> fetchCampaignHistory({required String campaignId});
   Future<ForecastModel> fetchCampaignForecast({required CampaignHistoryModel history});

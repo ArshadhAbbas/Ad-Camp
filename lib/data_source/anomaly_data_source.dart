@@ -12,7 +12,7 @@ class AnomalyDataSource {
       final response = await dioService.get(Env.liveMetricsEndpoint);
       return jsonDecode(response.data);
     } catch (e) {
-      throw Exception('Failed to load Metrics: $e');
+      throw Exception('Failed to load Metrics');
     }
   }
 

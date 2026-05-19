@@ -57,6 +57,53 @@ final class CampaignDataSourceProvider
 String _$campaignDataSourceHash() =>
     r'b83f22156d7134ab1209119cb991020309b879f2';
 
+@ProviderFor(cacheService)
+final cacheServiceProvider = CacheServiceProvider._();
+
+final class CacheServiceProvider
+    extends
+        $FunctionalProvider<
+          CampaignCacheService,
+          CampaignCacheService,
+          CampaignCacheService
+        >
+    with $Provider<CampaignCacheService> {
+  CacheServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cacheServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cacheServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<CampaignCacheService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CampaignCacheService create(Ref ref) {
+    return cacheService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CampaignCacheService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CampaignCacheService>(value),
+    );
+  }
+}
+
+String _$cacheServiceHash() => r'67306ca1b29fe772bcc2fb780c9846f9fb130c93';
+
 @ProviderFor(campaignRepository)
 final campaignRepositoryProvider = CampaignRepositoryProvider._();
 
@@ -103,7 +150,7 @@ final class CampaignRepositoryProvider
 }
 
 String _$campaignRepositoryHash() =>
-    r'a93fd8fbc69527e55562afb30bf32422a585ef94';
+    r'988203385a71878d8ee06838898b7352ea7f35f8';
 
 @ProviderFor(CampaignDataSourceController)
 final campaignDataSourceControllerProvider =
@@ -135,7 +182,7 @@ final class CampaignDataSourceControllerProvider
 }
 
 String _$campaignDataSourceControllerHash() =>
-    r'79468c733b1f6d26f6c935c74bf40a6473feb4a5';
+    r'9a72744421c1833d57551c4c8d15f273f4c47785';
 
 abstract class _$CampaignDataSourceController
     extends $AsyncNotifier<CampaignDataControllerModel> {

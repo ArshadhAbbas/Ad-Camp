@@ -9,6 +9,7 @@ class AppTheme {
       surface: ColorConstants.onyx, // Match your Scaffold color here
     ),
     scaffoldBackgroundColor: ColorConstants.onyx,
+    drawerTheme: DrawerThemeData(backgroundColor: ColorConstants.onyx),
     appBarTheme: AppBarTheme(
       backgroundColor: ColorConstants.darkJungleGreen,
       elevation: 0,

@@ -14,7 +14,7 @@ class CampaignDataSource {
       return jsonDecode(response.data);
     } catch (e) {
       log('Error fetching campaigns: $e');
-      throw Exception('Failed to load campaigns: $e');
+      throw Exception('Failed to load campaigns');
     }
   }
 
@@ -24,7 +24,7 @@ class CampaignDataSource {
       return jsonDecode(response.data);
     } catch (e) {
       log('Error fetching campaign details: $e');
-      throw Exception('Failed to load campaign details: $e');
+      throw Exception('Failed to load campaign details');
     }
   }
 
@@ -36,7 +36,7 @@ class CampaignDataSource {
       return jsonDecode(response.data);
     } catch (e) {
       log('Error fetching campaign history: $e');
-      throw Exception('Failed to load campaign history: $e');
+      throw Exception('Failed to load campaign history');
     }
   }
 
@@ -49,7 +49,7 @@ class CampaignDataSource {
       return jsonDecode(response.data);
     } catch (e) {
       log('Error fetching forecast data: $e');
-      throw Exception('Failed to load forecast data: $e');
+      throw Exception('Failed to load forecast data');
     }
   }
 }

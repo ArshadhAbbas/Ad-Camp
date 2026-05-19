@@ -16,7 +16,7 @@ class SpendSummaryDataSource {
       );
       return jsonDecode(response.data);
     } catch (e) {
-      log('Error fetching spend summary: $e');
+      log('Error fetching spend summary');
       throw Exception('Failed to load spend summary: $e');
     }
   }
