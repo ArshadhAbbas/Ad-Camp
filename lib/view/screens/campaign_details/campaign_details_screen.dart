@@ -24,6 +24,10 @@ class CampaignDetailsScreen extends ConsumerWidget {
   final String? title, campaignObjective;
   final CampaignStatusEnum? campaignStatus;
 
+  static const String pathName = "campaign_details";
+  static const String path = "/campaign_details";
+  static const String campaignIdParam = "campaign_id";
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final campaignDetailsModel = ref.watch(campaignDetailsControllerProvider(campid: campaignId));

@@ -1,12 +1,13 @@
 import 'package:ad_camp/controller/campaign_data_source_controller/campaign_data_source/campaign_data_source_controller.dart';
-import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/utils/string_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ObjectiveFilterIcon extends StatelessWidget {
   const ObjectiveFilterIcon({super.key});
@@ -51,7 +52,7 @@ class ObjectiveFilterIcon extends StatelessWidget {
                               ref
                                   .read(campaignDataSourceControllerProvider.notifier)
                                   .filterObjective(objective);
-                              Navigator.pop(context);
+                              context.pop();
                             },
                           );
                         }).toList(),
@@ -62,7 +63,7 @@ class ObjectiveFilterIcon extends StatelessWidget {
                         ref
                             .read(campaignDataSourceControllerProvider.notifier)
                             .filterObjective(null);
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       child: Container(
                         width: double.infinity,

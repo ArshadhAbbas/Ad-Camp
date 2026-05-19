@@ -7,6 +7,7 @@ import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:ad_camp/view/widgets/topaz_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class Top3CampaignCTRCard extends StatelessWidget {
   const Top3CampaignCTRCard({super.key, this.topCampaigns, this.totalCTR, required this.images});
@@ -30,18 +31,18 @@ class Top3CampaignCTRCard extends StatelessWidget {
             itemCount: topCampaigns?.length ?? 0,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
-              child: GestureDetector(
+              child: InkWell(
                 onTap: () => topCampaigns != null
-                    ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CampaignDetailsScreen(
-                            campaignId: topCampaigns![index].id ?? "",
-                            title: topCampaigns![index].name ?? "",
-                            campaignStatus: null,
-                            campaignObjective: null,
-                          ),
-                        ),
+                    ? context.pushNamed(
+                        CampaignDetailsScreen.pathName,
+                        queryParameters: {
+                          CampaignDetailsScreen.campaignIdParam: topCampaigns![index].id,
+                        },
+                        extra: {
+                          "title": topCampaigns![index].name ?? "",
+                          "campaignStatus": null,
+                          "campaignObjective": null,
+                        },
                       )
                     : null,
                 child: Row(

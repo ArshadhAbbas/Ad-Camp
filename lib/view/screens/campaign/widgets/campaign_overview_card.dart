@@ -10,6 +10,7 @@ import 'package:ad_camp/view/screens/campaign/widgets/campaign_metric_card.dart'
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_spend_section.dart';
 import 'package:ad_camp/view/screens/campaign_details/campaign_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CampaignOverviewCard extends StatelessWidget {
   const CampaignOverviewCard({super.key, required this.campaign});
@@ -20,16 +21,14 @@ class CampaignOverviewCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (campaign.id != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CampaignDetailsScreen(
-                campaignId: campaign.id!,
-                title: campaign.name ?? "",
-                campaignObjective: campaign.objective ?? "",
-                campaignStatus: CampaignStatusHelper.getStatusEnum(campaign.status!),
-              ),
-            ),
+          context.pushNamed(
+            CampaignDetailsScreen.pathName,
+            queryParameters: {CampaignDetailsScreen.campaignIdParam: campaign.id!},
+            extra: {
+              "title": campaign.name,
+              "campaignStatus": CampaignStatusHelper.getStatusEnum(campaign.status!),
+              "campaignObjective": campaign.objective,
+            },
           );
         }
       },

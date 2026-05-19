@@ -5,6 +5,7 @@ import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class CampaignDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CampaignDetailsAppBar({
@@ -26,7 +27,7 @@ class CampaignDetailsAppBar extends StatelessWidget implements PreferredSizeWidg
 
       leadingWidth: 56,
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => context.pop(),
         splashRadius: 22,
         icon: const Icon(Icons.arrow_back, size: 22),
       ),
