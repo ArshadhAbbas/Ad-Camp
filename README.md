@@ -1,4 +1,4 @@
-# ad_camp
+# Ad Camp
 
 ## Project Summary
 
