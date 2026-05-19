@@ -1,5 +1,5 @@
-import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/color_constants.dart';
+import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/view/screens/campaign/widgets/campaign_status_card.dart';
 import 'package:ad_camp/view/widgets/image_widget.dart';
@@ -31,7 +31,13 @@ class CampaignCardHeader extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               Expanded(
-                child: Text(campaignName ?? "", style: TextStyleConstants.f12w600, maxLines: 2),
+                child: Hero(
+                  tag: campaignName ?? "",
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(campaignName ?? "", style: TextStyleConstants.f12w600, maxLines: 2),
+                  ),
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),

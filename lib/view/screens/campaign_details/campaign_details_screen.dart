@@ -3,6 +3,7 @@ import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/enums/campaign_status_enum.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
+import 'package:ad_camp/utils/campaign_status_helper.dart';
 import 'package:ad_camp/utils/num_extensions.dart';
 import 'package:ad_camp/view/screens/campaign_details/widgets/budget_recommendation_card.dart';
 import 'package:ad_camp/view/screens/campaign_details/widgets/campaign_details_appbar.dart';
@@ -21,17 +22,28 @@ class CampaignDetailsScreen extends ConsumerWidget {
     required this.campaignStatus,
     required this.campaignObjective,
   });
-  final String campaignId, title, campaignObjective;
-  final CampaignStatusEnum campaignStatus;
+  final String campaignId;
+  final String? title, campaignObjective;
+  final CampaignStatusEnum? campaignStatus;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final campaignDetailsModel = ref.watch(campaignDetailsControllerProvider(campid: campaignId));
     return Scaffold(
       appBar: CampaignDetailsAppBar(
-        title: title,
-        campaignObjective: campaignObjective,
-        campaignStatus: campaignStatus,
+        title:
+            title ??
+            (campaignDetailsModel.hasValue
+                ? campaignDetailsModel.value?.campaignDetails.campaign?.name ?? ""
+                : ""),
+        campaignObjective: campaignDetailsModel.hasValue
+            ? campaignDetailsModel.value?.campaignDetails.campaign?.objective ?? ""
+            : null,
+        campaignStatus: campaignDetailsModel.hasValue
+            ? CampaignStatusHelper.getStatusEnum(
+                campaignDetailsModel.value?.campaignDetails.campaign?.status ?? "",
+              )
+            : null,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -39,7 +51,6 @@ class CampaignDetailsScreen extends ConsumerWidget {
           child: campaignDetailsModel.when(
             data: (data) {
               final campaignDetails = data.campaignDetails;
-              final campaignHistory = data.campaignHistory;
               final campaignForecast = data.forecast;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,14 +93,14 @@ class CampaignDetailsScreen extends ConsumerWidget {
                         ),
                     ],
                   ),
-                  if (data.forecast.forecast != null) ...[
+                  if (campaignForecast.forecast != null) ...[
                     const SizedBox(height: 18),
                     CtrForecastCard(data: data),
                   ],
                   const SizedBox(height: 18),
                   BudgetRecommendationCard(
-                    isUpwardTrend: data.forecast.recommendation?.trend != "downward",
-                    message: data.forecast.recommendation?.message ?? "",
+                    isUpwardTrend: campaignForecast.recommendation?.trend != "downward",
+                    message: campaignForecast.recommendation?.message ?? "",
                   ),
 
                   const SizedBox(height: 22),

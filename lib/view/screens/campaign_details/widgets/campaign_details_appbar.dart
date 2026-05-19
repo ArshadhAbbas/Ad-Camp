@@ -13,8 +13,8 @@ class CampaignDetailsAppBar extends StatelessWidget implements PreferredSizeWidg
     required this.campaignObjective,
     required this.campaignStatus,
   });
-  final String title, campaignObjective;
-  final CampaignStatusEnum campaignStatus;
+  final String? title, campaignObjective;
+  final CampaignStatusEnum? campaignStatus;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -36,27 +36,34 @@ class CampaignDetailsAppBar extends StatelessWidget implements PreferredSizeWidg
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title, style: TextStyleConstants.f16w600),
+          Hero(
+            tag: title ?? "",
+            child: Material(
+              color: ColorConstants.darkJungleGreen,
+              child: Text(title ?? "", style: TextStyleConstants.f16w600),
+            ),
+          ),
 
           const SizedBox(height: 8),
 
           Row(
             children: [
-              CampaignStatusCard(status: campaignStatus),
+              if (campaignStatus != null) CampaignStatusCard(status: campaignStatus!),
 
               const SizedBox(width: 8),
 
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: ColorConstants.topaz.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(4),
+              if (campaignObjective != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.topaz.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    campaignObjective!,
+                    style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.topaz),
+                  ),
                 ),
-                child: Text(
-                  campaignObjective,
-                  style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.topaz),
-                ),
-              ),
             ],
           ),
         ],

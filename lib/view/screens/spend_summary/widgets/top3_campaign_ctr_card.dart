@@ -2,6 +2,7 @@ import 'package:ad_camp/core/constants/color_constants.dart';
 import 'package:ad_camp/core/constants/image_constants.dart';
 import 'package:ad_camp/core/constants/text_style_constants.dart';
 import 'package:ad_camp/models/spend_summary_model/spend_summary_model.dart';
+import 'package:ad_camp/view/screens/campaign_details/campaign_details_screen.dart';
 import 'package:ad_camp/view/widgets/app_card.dart';
 import 'package:ad_camp/view/widgets/topaz_card.dart';
 import 'package:flutter/material.dart';
@@ -29,37 +30,60 @@ class Top3CampaignCTRCard extends StatelessWidget {
             itemCount: topCampaigns?.length ?? 0,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
-              child: Row(
-                children: [
-                  TopazCard(
-                    child: Text(
-                      "${index + 1}",
-                      style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.topaz),
+              child: GestureDetector(
+                onTap: () => topCampaigns != null
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CampaignDetailsScreen(
+                            campaignId: topCampaigns![index].id ?? "",
+                            title: topCampaigns![index].name ?? "",
+                            campaignStatus: null,
+                            campaignObjective: null,
+                          ),
+                        ),
+                      )
+                    : null,
+                child: Row(
+                  children: [
+                    TopazCard(
+                      child: Text(
+                        "${index + 1}",
+                        style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.topaz),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  TopazCard(child: SvgPicture.asset(images[index], height: 24)),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      topCampaigns?[index].name ?? "",
-                      style: TextStyleConstants.f12w400.copyWith(color: ColorConstants.whiteSmoke),
+                    SizedBox(width: 10),
+                    TopazCard(child: SvgPicture.asset(images[index], height: 24)),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Hero(
+                        tag: topCampaigns![index].name ?? "",
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            topCampaigns?[index].name ?? "",
+                            style: TextStyleConstants.f12w400.copyWith(
+                              color: ColorConstants.whiteSmoke,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    "${(((topCampaigns?[index].ctr ?? 0) / (totalCTR ?? 1)) * 100).toStringAsFixed(1)}%",
-                    style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.jadeGreen),
-                  ),
-                  SizedBox(width: 3),
-                  SvgPicture.asset(
-                    ImageConstants.tradeUpAngled,
-                    height: 12,
-                    colorFilter: ColorFilter.mode(ColorConstants.jadeGreen, BlendMode.srcIn),
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    Text(
+                      "${(((topCampaigns?[index].ctr ?? 0) / (totalCTR ?? 1)) * 100).toStringAsFixed(1)}%",
+                      style: TextStyleConstants.f10w400.copyWith(color: ColorConstants.jadeGreen),
+                    ),
+                    SizedBox(width: 3),
+                    SvgPicture.asset(
+                      ImageConstants.tradeUpAngled,
+                      height: 12,
+                      colorFilter: ColorFilter.mode(ColorConstants.jadeGreen, BlendMode.srcIn),
+                    ),
+                  ],
+                ),
               ),
             ),
             separatorBuilder: (context, index) =>
