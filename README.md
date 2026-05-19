@@ -1,191 +1,238 @@
 # ad_camp
 
-## Overview
+## Project Summary
 
-`ad_camp` is a Flutter advertising dashboard prototype built with Riverpod state management. It is structured around four main screens: Campaigns, Spend Summary, Anomaly Alerts, and Profile. The app uses a custom dark theme, reusable card widgets, SVG iconography, and simple interactive controls.
+`ad_camp` is a Flutter advertising analytics dashboard built with Riverpod, GoRouter, and Hive. The app offers campaign browsing, campaign details, spend analytics, anomaly detection, and offline-aware behavior.
 
 ---
 
-## Application Structure
+## App Architecture
 
 ### Entry Point
 - `lib/main.dart`
-  - Creates the app using `ProviderScope` for Riverpod.
-  - Uses `MaterialApp` with the custom `AppTheme.theme`.
-  - Sets `BottomNavBarScreen()` as the home screen.
+  - Initializes `WidgetsFlutterBinding` and application services.
+  - Calls `NotificationService.init()`.
+  - Initializes Hive and registers generated adapters.
+  - Opens `campaign_cache` Hive box for campaign caching.
+  - Wraps the app in `ProviderScope`.
+  - Uses `ConnectivityAppWrapper` and `ConnectivityWidgetWrapper` for offline support.
+  - Hosts `MaterialApp.router` with `GoRouterConfig.router`.
 
-### Theme
-- `lib/core/app_theme.dart`
-  - Defines the global `ThemeData`.
-  - Uses a dark palette with accent colors from `ColorConstants`.
-  - Customizes `AppBarTheme`, `BottomNavigationBarThemeData`, `InputDecorationTheme`, and `SwitchThemeData`.
+### Theme & Design
+- `lib/core/theme/app_theme.dart`
+  - Centralizes the app theme and color scheme.
+  - Configures app bar, switch, text button, popup menu, bottom sheet, and bottom navigation styling.
+  - Uses the dark palette from `ColorConstants`.
 
 ### Constants
-- `lib/core/constants/color_constants.dart`
-  - Centralizes app colors like `darkJungleGreen`, `onyx`, `topaz`, and `jadeGreen`.
-- `lib/core/constants/text_style_constants.dart`
-  - Reusable text styles such as `f16w600`, `f14w600`, `f40w800`, and `f10w400`.
-- `lib/core/constants/image_constants.dart`
-  - Defines asset paths for SVG icons and a sample remote image.
-- `lib/core/constants/campaign_status_enum.dart`
-  - Enum values: `active`, `paused`, and `ended`.
+- `lib/core/constants/color_constants.dart` — shared color palette.
+- `lib/core/constants/text_style_constants.dart` — reusable text styles.
+- `lib/core/constants/image_constants.dart` — SVG asset and sample image paths.
+- `lib/core/constants/string_constants.dart` — string constants such as Hive box names.
+- `lib/core/constants/enums/campaign_status_enum.dart` — campaign status enum.
+- `lib/core/constants/enums/spend_summary_enums.dart` — spend summary range enum.
+- `lib/core/constants/enums/anomaly_enums.dart` — anomaly type enum.
 
-### Utilities
-- `lib/utils/date_time_extensions.dart`
-  - Adds `formattedDate` to `DateTime` with `dd MMM yyyy` formatting.
+### Helpers and Utilities
+- `lib/utils/date_time_extensions.dart` — date formatting extension.
+- `lib/utils/num_extensions.dart` — compact number formatting helper.
+- `lib/utils/string_helpers.dart` — title case and date parsing.
+- `lib/utils/campaign_status_helper.dart` — status string/enum conversion.
+- `lib/utils/spend_summary_helper.dart` — range label conversion.
+- `lib/utils/anomaly_helper.dart` — anomaly text, color, and icon mapping.
 
 ---
 
-## Navigation and State
+## Navigation
 
-### Bottom Navigation
+- `lib/core/services/go_router_config.dart`
+  - Main route `/` to `BottomNavBarScreen`.
+  - Route `/campaign_details` to `CampaignDetailsScreen` with `campaign_id` query parameter.
+  - Handles route errors with a fallback `Scaffold`.
+
 - `lib/view/screens/bottom_nav_bar/bottom_nav_bar_screen.dart`
-  - Hosts the main screen stack.
-  - Displays dynamic titles for each tab.
-  - Uses `CustomBottomNavBar` and an `AppBar` via `UniversalAppbar`.
+  - The app container for tabs: Campaigns, Spend Summary, Alerts, Profile.
+  - Uses `UniversalAppbar` for consistent app bar styling.
 
 - `lib/view/screens/bottom_nav_bar/widgets/custom_bottom_nav_bar.dart`
-  - Custom bottom navigation bar with animated icon scaling.
-  - Uses Riverpod state to change selected index.
+  - Custom bottom nav with animated selected icon scaling and tint.
 
-### Riverpod Controllers
+---
+
+## State Management
+
+### Controllers
 - `lib/controller/bottom_nav_bar_controller/bottom_nav_bar_controller.dart`
-  - Manages the current bottom navigation index.
-  - Actions: `changeIndex(int index)`.
-
+  - Tracks the active bottom nav index.
+- `lib/controller/campaign_data_source_controller/campaign_data_source/campaign_data_source_controller.dart`
+  - Loads campaigns from repository.
+  - Applies search text, status filter, objective filter, and refresh.
+- `lib/controller/campaign_details_controller/campaign_details_controller.dart`
+  - Loads campaign details, campaign history, and forecast.
+  - Prepares chart points and forecast labels.
+- `lib/controller/spend_summary_controller/spend_summary_controller.dart`
+  - Loads spend summary based on selected date range.
+  - Prepares chart data and top campaign metrics.
 - `lib/controller/spend_summary_date_range_controller/spend_summary_date_range_controller.dart`
-  - Controls selected spend report date range.
-  - Starts at `last7Days`.
-  - Actions: `changeDateRange(SpendSummaryDateRangeEnum dateRange)`.
+  - Manages the selected spend summary range.
+- `lib/controller/anomaly_controller/anomaly_controller.dart`
+  - Polls anomaly data every 30 seconds.
+  - Emits notifications when enabled.
+- `lib/controller/notification_controller/notification_controller.dart`
+  - Checks notification permission state.
+  - Requests permission when toggled.
 
 ---
 
-## Screens
+## Data Layer
 
-### 1. Campaign Screen
-- `lib/view/screens/campaign/campagin_screen.dart`
-  - Displays search input, filter chips, and a vertical list of campaign cards.
+### Services
+- `lib/core/services/dio_service.dart`
+  - Singleton Dio client configured with `Env.apiBaseUrl`.
+  - Implements `get` and `post` helpers.
+- `lib/core/services/notification_service.dart`
+  - Initializes local notifications.
+  - Requests and checks Android notification permission.
+  - Displays anomaly push notifications.
+- `lib/core/services/campaign_cache_service.dart`
+  - Uses Hive to cache campaign list data.
+  - Provides cached data for faster startup.
 
-#### Campaign Widgets
-- `CampaignSearchField`
-  - Input with search icon and filter suffix icon.
-  - Dismisses keyboard when tapped outside.
-- `CampaignFilterChips`
-  - Two static filter chips: `All` and `Active`.
-- `CampaignOverviewCard`
-  - Main campaign listing card representing a single campaign entry.
-  - Composes header, spend progress, metrics, and bottom info.
-- `CampaignCardHeader`
-  - Shows campaign image, title, category tag, status chip, and more icon.
-- `CampaignStatusCard`
-  - Displays status with a color-coded dot and text.
-  - Status colors: green for active, yellow for paused, red for ended.
-- `CampaignSpendSection`
-  - Shows total spend and a progress bar for budget usage.
-- `CampaignMetricCard`
-  - Reusable metric widget with SVG icon, value, label, and optional suffix.
-- `CampaignBottomInfoSection`
-  - Displays details such as start date and audience info.
+### Endpoints
+- `lib/env.dart`
+  - Defines backend endpoints used by the app:
+    - `/campaigns/`
+    - `/campaigns/summary/`
+    - `/campaigns/metrics/live`
+    - `/anomaly/detect`
+    - `/history/`
+    - `/forecast/ctr/`
 
-### 2. Spend Summary Screen
+### Data Sources
+- `lib/data_source/campaign_data_source.dart`
+  - Fetch campaigns, campaign details, campaign history, and forecast.
+- `lib/data_source/spend_summary_data_source.dart`
+  - Fetch spend summary data by range.
+- `lib/data_source/anomaly_data_source.dart`
+  - Fetch live metrics and detect anomalies.
+
+### Repositories
+- `lib/repository/campaign_repository/campaign_repository.dart`
+  - Campaign repository interface.
+- `lib/repository/campaign_repository/campaign_repository_impl.dart`
+  - Implements campaign fetch, details, history, forecast, and caching.
+- `lib/repository/spend_summary_repository/spend_summary_repository.dart`
+  - Spend summary repository interface.
+- `lib/repository/spend_summary_repository/spend_summary_repository_impl.dart`
+  - Implements spend summary fetch.
+- `lib/repository/anomaly_repository/anomaly_repository.dart`
+  - Anomaly repository interface.
+- `lib/repository/anomaly_repository/anomaly_repository_impl.dart`
+  - Implements anomaly fetch by combining live metrics and detection.
+
+---
+
+## Screens and Widgets
+
+### Campaign Experience
+- `lib/view/screens/campaign/campaign_screen.dart`
+  - Search bar, objective filter modal, and live campaign list.
+- Key campaign widgets:
+  - `CampaignSearchField` — search input.
+  - `CampaignFilterChips` — status chips.
+  - `ObjectiveFilterIcon` — objective filter bottom sheet.
+  - `CampaignOverviewCard` — tappable campaign entry.
+  - `CampaignCardHeader` — thumbnail, objective, and status.
+  - `CampaignSpendSection` — spending progress bar.
+  - `CampaignMetricCard` — impressions/clicks/CTR metrics.
+  - `CampaignBottomInfoSection` — campaign metadata.
+
+### Campaign Details
+- `lib/view/screens/campaign_details/campaign_details_screen.dart`
+  - Detail view for an individual campaign.
+  - Loads details, historical data, and forecast.
+- Supporting detail widgets:
+  - `CampaignDetailsAppBar` — custom app bar with objective and status.
+  - `CampaignDetailsMetricCard` — metrics row.
+  - `CtrForecastCard` — forecast visualization.
+  - `BudgetRecommendationCard` — recommendation summary.
+  - `DetailsLoadingScreen`, `DetailsErrorScreen` — request states.
+
+### Spend Summary
 - `lib/view/screens/spend_summary/spend_summary_screen.dart`
-  - Contains spend overview cards and a date range picker.
+  - Overview of total spend and channel split.
+- Spend widgets:
+  - `TotalSpendCard` — total spend summary.
+  - `SpendByChannelCard` — donut chart breakdown.
+  - `Top3CampaignCTRCard` — top-performing campaigns.
+  - `SpendSummaryDateRangePicker` — date range selection.
 
-#### Spend Summary Widgets
-- `TotalSpendCard`
-  - Summary card with total spend amount and icon.
-- `SpendByChannelCard`
-  - Displays a doughnut chart using `syncfusion_flutter_charts`.
-  - Summarizes spend distribution by channel.
-- `Top3CampaignCTRCard`
-  - Lists top three campaigns by click-through rate.
-  - Uses `TopazCard` and built-in icons.
-- `SpendSummaryDateRangePicker`
-  - Interactive date range selector for last 7, 14, and 30 days.
-  - Updates state via `spendSummaryDateRangeControllerProvider`.
-
-### 3. Alerts Screen
+### Alerts
 - `lib/view/screens/alerts/alerts_screen.dart`
-  - Displays alert overview and recent anomaly cards.
-  - Includes a notification switch card.
+  - Shows anomaly alerts and notification control.
+- Alert widgets:
+  - `AlertsHeaderCard` — live monitoring state.
+  - `AlertAnomalyCard` — anomaly incident card.
+  - `AppSwitch` — custom toggle control.
 
-#### Alerts Widgets
-- `AlertsHeaderCard`
-  - Live monitoring status card with indicator.
-- `AlertAnomalyCard`
-  - Detailed anomaly card with metric breakdown.
-  - Includes spend, expected, and change metrics.
-- `AppSwitch`
-  - Custom toggle switch widget with animation.
-
-### 4. Profile Screen
-- `lib/view/screens/profile/profile_screen.dart`
-  - Currently a placeholder returning an empty `Scaffold`.
-
----
-
-## Shared Widgets
-
+### Shared UI Components
 - `lib/view/widgets/universal_appbar.dart`
-  - Custom app bar used across screens.
-  - Adds a bottom divider line to reinforce the header.
+  - Standard app bar wrapper.
 - `lib/view/widgets/app_card.dart`
-  - Reusable card container with inner padding and border.
+  - Reusable surface card.
 - `lib/view/widgets/topaz_card.dart`
-  - Accent container with light topaz background.
+  - Accent card style.
 - `lib/view/widgets/app_loader.dart`
-  - (Available but not referenced in current screens.)
+  - Shown during async loading.
+- `lib/view/widgets/image_widget.dart` — shared image component.
+- `lib/view/widgets/dashed_line_painter.dart` — dashed separator painter.
+- `lib/view/widgets/shimmers/rectangular_shimmer.dart` — shimmer placeholder.
 
 ---
 
-## Theme and Style
+## Models & Persistence
 
-- The app uses a dark UI palette:
-  - Background: `ColorConstants.onyx`
-  - Surface: `ColorConstants.darkJungleGreen`
-  - Accent: `ColorConstants.topaz`
-  - Secondary text: `ColorConstants.starDust` and `ColorConstants.cloud`
-- Typography is centralized in `TextStyleConstants`.
-- Input fields and switches are styled in `AppTheme.theme`.
+### Core Models
+- `CampaignsListModel` — campaign list payload.
+- `CampaignDetailsModel` — detailed campaign response.
+- `CampaignHistoryModel` — historical CTR series.
+- `ForecastModel` — forecast response data.
+- `SpendSummaryModel` — spend summary payload.
+- `AnomalyModel` — anomaly event model.
+- `LiveMetricsModel` — live metrics for anomaly detection.
+- `HistoricalCtrModel` — CTR point model.
 
----
-
-## Assets and Icons
-
-- SVG icon assets are declared in `ImageConstants`.
-- Main icon categories:
-  - `campaign`, `spendSummary`, `alerts`, `profile`
-  - `filterIcon`, `view`, `calendar`, `cursor`, `tradeUp`, `target`, `tvIcon`
-- `sampleImage` uses a remote placeholder image from `picsum.photos`.
-
----
-
-## Actions and Interactions
-
-- Bottom navigation changes screen by index with animation in `CustomBottomNavBar`.
-- Campaign card list is currently static but parameterized by status.
-- Spend date range picker toggles among last 7, 14, and 30 days.
-- Alert notification on/off state is managed locally within `AppSwitch`.
-- Search field presents a `TextField` and filter icon but does not yet implement search logic.
+### Code Generation
+- Uses Freezed, JSON Serializable, Hive adapters, and Riverpod generators.
+- Generated files live alongside model/controller sources in `*.g.dart` and `*.freezed.dart`.
+- Hive adapter registration occurs in `lib/models/hive_adapters/hive_registrar.g.dart`.
 
 ---
 
 ## Packages Used
 
-- `flutter_riverpod` for state management.
-- `riverpod_annotation` for controller generation.
-- `cached_network_image` for remote campaign image loading.
-- `flutter_svg` for SVG icon rendering.
-- `syncfusion_flutter_charts` for the doughnut chart.
-- `intl` for date formatting.
+- `cached_network_image`
+- `connectivity_wrapper`
+- `dio`
+- `flutter_local_notifications`
+- `flutter_riverpod`
+- `flutter_svg`
+- `freezed_annotation`
+- `go_router`
+- `hive_ce`, `hive_ce_flutter`
+- `intl`
+- `json_annotation`
+- `riverpod_annotation`
+- `shimmer_animation`
+- `syncfusion_flutter_charts`
+- `timeago`
 
----
-
-## Notes
-
-- The `ProfileScreen` is currently unimplemented and serves as a placeholder for future profile content.
-- `AppLoader` exists as a reusable loading indicator but is not currently used in the active screen flow.
-- The campaign list is mocked with repeated cards and uses local enums for status representation.
+Dev tools:
+- `build_runner`
+- `freezed`
+- `hive_ce_generator`
+- `json_serializable`
+- `riverpod_generator`
 
 ---
 
@@ -198,8 +245,18 @@ flutter pub get
 flutter run
 ```
 
-For platform-specific runs, select the target device or platform in your IDE or use:
+To target a specific device:
 
 ```bash
 flutter run -d <device_id>
 ```
+
+---
+
+## Notes
+
+- The profile screen is a placeholder for future content.
+- Campaign list filtering, search, and objective filtering are managed in the campaign controller.
+- Anomaly polling is automatic and respects notification permission state.
+- The app uses cached campaign responses for faster initial UI display.
+- Offline connectivity is handled by `ConnectivityWrapper`.

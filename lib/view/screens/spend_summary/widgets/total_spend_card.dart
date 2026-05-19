@@ -15,6 +15,8 @@ class TotalSpendCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       child: Column(
+        mainAxisAlignment: .start,
+        crossAxisAlignment: .start,
         children: [
           AppCard(
             child: Row(
@@ -33,6 +35,8 @@ class TotalSpendCard extends StatelessWidget {
                   child: SvgPicture.asset(ImageConstants.tradeUp),
                 ),
                 Column(
+                  mainAxisAlignment: .start,
+                  crossAxisAlignment: .start,
                   children: [
                     Text(
                       "Total Spend",
